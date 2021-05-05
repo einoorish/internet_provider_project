@@ -7,6 +7,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-<jsp:forward page="/register"/>
+<jsp:forward page="/home"/>
 </body>
 </html>

@@ -7,6 +7,8 @@ import java.sql.SQLException;
 
 import model.User;
 
+//TODO: separate out the implementation
+
 public class UserDao {
 
 	public int register(User user) {
