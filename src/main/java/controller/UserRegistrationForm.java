@@ -16,7 +16,7 @@ import model.User;
 
 @WebServlet("/register")
 public class UserRegistrationForm extends HttpServlet {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -5480318454519187196L;
 	private UserDao userDao = new UserDao();
        
     public UserRegistrationForm() {
@@ -26,12 +26,14 @@ public class UserRegistrationForm extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.getWriter().append("Served at: ").append(request.getContextPath());
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/userregister.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/login.jsp");
 		dispatcher.forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		User user = new User();
+		System.out.println(request.getHeader(getServletInfo()));
+		System.out.println(request.getHeader(getServletName()));
 		user.setLogin(request.getParameter("login"));
 		user.setPassword(request.getParameter("password"));
 		user.setFunds(new BigDecimal(0));

@@ -9,6 +9,14 @@ public class User {
     private UserRole role;
     private BigDecimal funds;
     
+    public User(long id, String login, String password, BigDecimal funds, UserRole role) {
+    	this.id = id;
+    	this.login = login;
+    	this.password = password;
+    	this.funds = funds;
+    	this.role = role;
+    }
+    
 	public long getId() {
 		return id;
 	}

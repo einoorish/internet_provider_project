@@ -2,32 +2,36 @@ package controller;
 
 import java.io.IOException;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import dao.TariffDao;
-import dao.impl.TariffDaoImpl;
-import model.TariffType;
+import controller.commands.Command;
+import controller.commands.CommandHandler;
 
-@WebServlet("/home")
 public class Controller extends HttpServlet {
-	private static final long serialVersionUID = -1951358628804251994L;
+	private static final long serialVersionUID = -2670825831853246200L;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	    TariffDao dao = new TariffDaoImpl();
-	    TariffType type = TariffType.PHONE;
-	   
-	    request.setAttribute("type", type);
-	    request.setAttribute("data", dao.getTariffListByType(type));
-
+		String commandName = request.getParameter("command");
+		Command command = CommandHandler.get(commandName);
+		String uri = command.execute(request);
 		
-		response.getWriter().append("Served at: ").append(request.getContextPath());
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/home.jsp");
-		dispatcher.forward(request, response);
+		if (uri.contains("/controller")) {
+			response.sendRedirect(uri);
+        } else {
+            request.getRequestDispatcher(uri).forward(request, response);
+        }
+		
+//		RequestDispatcher dispatcher = request.getRequestDispatcher(uri);
+//		dispatcher.forward(request, response);
+	}
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		System.out.println("POST S");
+		doGet(request, response);
+		System.out.println("POST DONE");
 	}
 	
 }

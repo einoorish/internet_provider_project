@@ -11,6 +11,7 @@
 	<link href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round" rel="stylesheet">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+	
 	<style>
 			<%@include file="/WEB-INF/styles/home.css"%>
 	</style>
@@ -27,6 +28,9 @@
 		    });
 		})
 	</script>
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </head>
 <body>
 
@@ -38,53 +42,114 @@
             <a class="mr-sm-2">RU</a>
             <a class="mr-sm-2">UA</a>
             
-			<a class="btn btn-dark mr-sm-2" href="${pageContext.request.contextPath}/register">Sign Up</a>
-			<a class="btn btn-success mr-sm-2" href="${pageContext.request.contextPath}/register">Sign In</a>
+			<a class="btn btn-dark mr-sm-2" data-toggle="modal" data-target="#modalLogin" href="#">Sign Up</a>
+			<a class="btn btn-success mr-sm-2"  data-toggle="modal" data-target="#modalRegister">Sign In</a>
   		</form>
 	</nav>
 </header>
+
+
+
 <div class="container-fluid">
     
-    
     <div class="row">
-        <div class="col-2 px-1 bg-secondary position-fixed" id="sticky-sidebar">
-            <ul class="nav flex-column flex-nowrap py-4 vh-100 overflow-auto text-white p-2 list-group list-group-flush">
-			  <li class="list-group-item list-group-item-action ">Phone</li>
-			  <li class="list-group-item list-group-item-action ">Internet</li>
-			  <li class="list-group-item list-group-item-action ">Cable TV</li>
-			  <li class="list-group-item list-group-item-action ">IP-TV</li>
-			</ul>
-        </div>
-        
-        <div class="col-10 offset-2 bg-light"  id="main">
-            <div class="content">
-		        <div class="container">
-		            <div class="row py-4">
-		            <c:forEach items="${requestScope.data}" var="tariff">
-			           <div class="col-md-3">
-			                   <div class="card py-2 px-2">
-			                       <div class="card-block">
-			                           <h3 class="card-title align-items-center d-flex justify-content-center">${tariff.title}</h3>
-			                           <small class="card-subtitle text-muted align-items-top d-flex justify-content-center">${tariff.price} uah</small> 
-			                       		<div class="card-block">
-				                           <div class="card-text my-2">${tariff.description}</div>
-				                           <a href="#" class="card-link productItem btn btn-primary align-items-center d-flex justify-content-center">Subscribe</a> 
-				                  		</div>
-		                  			</div>
-			               		</div>
-			               		
-		               </div>
-			        </c:forEach>
-		    	</div>
-	        </div>
-	    </div>
-
-	     </div>
+        <div class="col-2  m-0 p-0 bg-secondary position-fixed">
+          <a class="btn btn-dark btn-block m-0" href="${pageContext.request.contextPath}/controller?menutype=PHONE">Phone</a>  
+		  <a class="btn btn-dark btn-block m-0" href="${pageContext.request.contextPath}/controller?menutype=INTERNET">Internet</a>
+		  <a class="btn btn-dark btn-block m-0" href="${pageContext.request.contextPath}/controller?menutype=CABLE">CableTV</a>
+		  <a class="btn btn-dark btn-block m-0" href="${pageContext.request.contextPath}/controller?menutype=IP_TV">IP-TV</a>
+    </div>
+    
+   <div class="col-10 min-vh-100 offset-2 bg-light"  id="main">
+   		<div class="content">
+    		<div class="container">
+        		<div class="row py-4">
+			        <c:forEach items="${requestScope.data}" var="tariff">
+			        <div class="col-md-3">
+		                <div class="card py-2 px-2">
+		                    <div class="card-block">
+		                        <h3 class="card-title align-items-center d-flex justify-content-center mb-1">${tariff.title}</h3>
+		                        <small class="card-subtitle text-muted align-items-top d-flex justify-content-center">${tariff.price} uah</small> 
+                    			<div class="card-block">
+		                        <div class="card-text my-2">${tariff.description}</div>
+		                	    	<a href="#" class="col-12 card-link btn btn-outline-primary align-items-center justify-content-center">Subscribe</a> 
+		                		</div>
+                			</div>
+            			</div>
+             		</div>
+     				</c:forEach>
+ 				</div>
+   			</div>
+		</div>
+    </div>
+    
     </div>
 </div>
 
 
+<!-- Modal -->
+<div class="modal fade" id="modalLogin" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Sign In</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+				<form action="#" method="post">
+					<div class="form-group">
+						<i class="fa fa-user"></i>
+						<input type="text" class="form-control" placeholder="Username" required="required">
+					</div>
+					<div class="form-group">
+						<i class="fa fa-lock"></i>
+						<input type="password" class="form-control" placeholder="Password" required="required">					
+					</div>
+				</form>				
+				
+			</div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary">Continue</button>
+      </div>
+    </div>
+  </div>
+</div>
 
-    </body>
+
+<div class="modal fade" id="modalRegister" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Sign Up</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+				<form action="#" method="post">
+					<div class="form-group">
+						<i class="fa fa-user"></i>
+						<input type="text" class="form-control" placeholder="Username" required="required">
+					</div>
+					<div class="form-group">
+						<i class="fa fa-lock"></i>
+						<input type="password" class="form-control" placeholder="Password" required="required">					
+					</div>
+				</form>				
+				
+			</div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary">Continue</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+</body>
 </html>
 
