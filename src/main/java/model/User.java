@@ -9,6 +9,14 @@ public class User {
     private UserRole role;
     private BigDecimal funds;
     
+    //TODO: Use builder pattern?
+    public User(String login, String password) {
+    	this.login = login;
+    	this.password = password;
+    	role = UserRole.USER;
+    	funds = new BigDecimal(0);
+    };
+    
     public User(long id, String login, String password, BigDecimal funds, UserRole role) {
     	this.id = id;
     	this.login = login;

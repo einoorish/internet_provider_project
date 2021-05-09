@@ -9,8 +9,10 @@ public class CommandHandler{
 
 	static {
 	    commands.put("home", new HomeCommand());
-//	    commands.put("go_to_login", (request, response) -> Path.LOGIN);
 	    commands.put("login", new LoginCommand());
+	    commands.put("registration", new RegistrationCommand());
+	    commands.put("logout", new LogoutCommand());
+	    commands.put("profile", new MyProfileCommand());
 	}
 	
 	private CommandHandler() {}

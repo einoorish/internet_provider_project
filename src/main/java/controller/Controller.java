@@ -23,15 +23,11 @@ public class Controller extends HttpServlet {
         } else {
             request.getRequestDispatcher(uri).forward(request, response);
         }
-		
-//		RequestDispatcher dispatcher = request.getRequestDispatcher(uri);
-//		dispatcher.forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("POST S");
+		System.out.println(request.getRequestURL());
 		doGet(request, response);
-		System.out.println("POST DONE");
 	}
 	
 }

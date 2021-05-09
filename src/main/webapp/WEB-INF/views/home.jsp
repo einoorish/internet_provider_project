@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:c="http://java.sun.com/jsp/jstl/core">
 <head>
 	<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 	<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
@@ -36,14 +36,27 @@
 
 <header>
 	<nav class="navbar navbar-light bg-dark">
-		<a href="${pageContext.request.contextPath}/home" class="navbar-brand text-light">Internet Provider</a>
+		<a href="${pageContext.request.contextPath}/controller?command=home" class="navbar-brand text-light">Internet Provider</a>
 		<form class="form-inline">
 			<a class="mr-sm-2">EN</a>
             <a class="mr-sm-2">RU</a>
             <a class="mr-sm-2">UA</a>
             
-			<a class="btn btn-dark mr-sm-2" data-toggle="modal" data-target="#modalLogin" href="#">Sign Up</a>
-			<a class="btn btn-success mr-sm-2"  data-toggle="modal" data-target="#modalRegister">Sign In</a>
+			<!-- SignIn/SignUp -->            
+	        <c:set var="username" value="${sessionScope.user.login}" scope="page"/>
+	
+	        <c:choose>
+	            <c:when test="${empty username}">
+					<a class="btn btn-dark mr-sm-2" data-toggle="modal" data-target="#modalRegister" href="#">Sign Up</a>
+					<a class="btn btn-success mr-sm-2"  data-toggle="modal" data-target="#modalLogin">Sign In</a>
+	            </c:when>
+	            <c:otherwise>
+					<a class="btn btn-dark text-muted mr-sm-2" href="${pageContext.request.contextPath}/controller?command=logout">Log out</a>
+					<a class="btn btn-dark mr-sm-2" href="${pageContext.request.contextPath}/controller?command=profile">My profile</a>
+	                <!-- Add log out -->
+	            </c:otherwise>
+	        </c:choose>
+            
   		</form>
 	</nav>
 </header>
@@ -72,7 +85,8 @@
 		                        <small class="card-subtitle text-muted align-items-top d-flex justify-content-center">${tariff.price} uah</small> 
                     			<div class="card-block">
 		                        <div class="card-text my-2">${tariff.description}</div>
-		                	    	<a href="#" class="col-12 card-link btn btn-outline-primary align-items-center justify-content-center">Subscribe</a> 
+		            
+		               	    	<a href="#" class="col-12 card-link btn btn-outline-primary align-items-center justify-content-center">Subscribe</a> 
 		                		</div>
                 			</div>
             			</div>
@@ -87,68 +101,58 @@
 </div>
 
 
-<!-- Modal -->
-<div class="modal fade" id="modalLogin" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<!-- Modals -->
+<div class="modal fade login" id="modalLogin" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Sign In</h5>
+        <h5 class="modal-title">Sign In</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-				<form action="#" method="post">
-					<div class="form-group">
-						<i class="fa fa-user"></i>
-						<input type="text" class="form-control" placeholder="Username" required="required">
-					</div>
-					<div class="form-group">
-						<i class="fa fa-lock"></i>
-						<input type="password" class="form-control" placeholder="Password" required="required">					
-					</div>
-				</form>				
-				
-			</div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-primary">Continue</button>
-      </div>
+			<form class="form-horizontal" action="${pageContext.request.contextPath}/controller?command=login" method="post">
+				<div class="form-group">
+					<i class="fa fa-user"></i>
+					<input name="login" type="text" class="form-control" placeholder="Username" required="required">
+				</div>
+				<div class="form-group">
+					<i class="fa fa-lock"></i>
+					<input name="password" type="password" class="form-control" placeholder="Password" required="required">					
+				</div>
+	            <button class="btn btn-success">Continue</button>
+			</form>								
+		</div>
     </div>
   </div>
 </div>
 
-
-<div class="modal fade" id="modalRegister" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<div class="modal fade" id="modalRegister" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Sign Up</h5>
+        <h5 class="modal-title">Sign Up</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-				<form action="#" method="post">
-					<div class="form-group">
-						<i class="fa fa-user"></i>
-						<input type="text" class="form-control" placeholder="Username" required="required">
-					</div>
-					<div class="form-group">
-						<i class="fa fa-lock"></i>
-						<input type="password" class="form-control" placeholder="Password" required="required">					
-					</div>
-				</form>				
-				
-			</div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-primary">Continue</button>
-      </div>
+			<form class="form-horizontal" action="${pageContext.request.contextPath}/controller?command=registration" method="post">
+				<div class="form-group">
+					<i class="fa fa-user"></i>
+					<input name="login" type="text" class="form-control" placeholder="Username" required="required">
+				</div>
+				<div class="form-group">
+					<i class="fa fa-lock"></i>
+					<input name="password" type="password" class="form-control" placeholder="Password" required="required">					
+				</div>
+	            <button class="btn btn-success">Continue</button>
+			</form>								
+	  </div>
     </div>
   </div>
 </div>
-
 
 </body>
 </html>
