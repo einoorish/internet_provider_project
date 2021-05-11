@@ -43,7 +43,7 @@ public class TariffDaoImpl implements dao.TariffDao {
         return result;
 	}
 	
-	public Tariff getTariffById(int id) {
+	public Tariff getTariffById(long id) {
 		Tariff tariff = null;
 		
         try (Connection connection = DBManager.getInstance().getConnection()){   	

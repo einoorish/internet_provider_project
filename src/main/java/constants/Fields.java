@@ -12,4 +12,11 @@ public class Fields {
     public static final String TARIFF_TITLE = "title";
     public static final String TARIFF_PRICE = "price";
     public static final String TARIFF_DESCRIPTION = "description";
+    
+    public static final String SUBSCRIPTION_ID = "id";
+    public static final String SUBSCRIPTION_TARIFF_ID = "tariffId";
+    public static final String SUBSCRIPTION_USER_ID = "userId";
+    public static final String SUBSCRIPTION_START_DATE = "startDate";
+    public static final String SUBSCRIPTION_END_DATE = "endDate";
+    public static final String SUBSCRIPTION_STATUS = "status"; 
 }

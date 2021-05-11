@@ -5,9 +5,12 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import constants.Fields;
 import dao.UserDao;
+import model.Subscription;
 import model.User;
 import model.UserRole;
 
@@ -51,7 +54,7 @@ public class UserDaoImpl implements UserDao {
         try (Connection connection = DBManager.getInstance().getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM user WHERE login=?")) {
             preparedStatement.setString(1, login);
-
+            
             user = getUserFromPreparedStatement(preparedStatement);
 
             connection.commit();
@@ -72,5 +75,30 @@ public class UserDaoImpl implements UserDao {
         resultSet.close();
         return user;
     }
+
+	@Override
+	public List<Subscription> getUserSubscriptions(long id) {
+		List<Subscription> subscriptions = new ArrayList<>();
+		try (Connection connection = DBManager.getInstance().getConnection();
+	            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM subscription WHERE userId=?")) {
+	            preparedStatement.setLong(1, id);
+
+	            ResultSet resultSet = preparedStatement.executeQuery();
+	            while (resultSet.next()) {
+	                subscriptions.add(
+	                		new Subscription(resultSet.getLong(Fields.SUBSCRIPTION_ID), resultSet.getLong(Fields.SUBSCRIPTION_USER_ID), 
+	                		    resultSet.getLong(Fields.SUBSCRIPTION_TARIFF_ID), resultSet.getDate(Fields.SUBSCRIPTION_START_DATE),
+	                		    resultSet.getDate(Fields.SUBSCRIPTION_END_DATE), resultSet.getString(Fields.SUBSCRIPTION_STATUS))
+	                		);
+	            }
+	            resultSet.close();
+
+	            connection.commit();
+	        } catch (SQLException ex) {
+        }
+		
+		System.out.println(subscriptions.size());
+		return subscriptions;
+	}
 	
 }

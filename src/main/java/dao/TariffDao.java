@@ -9,7 +9,7 @@ public interface TariffDao {
 
 	public int add(Tariff tariff);
 	
-	public Tariff getTariffById(int id);
+	public Tariff getTariffById(long id);
 	
 	public List<Tariff> getTariffListByType(TariffType type);
         
