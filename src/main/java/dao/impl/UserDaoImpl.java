@@ -6,11 +6,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import constants.Fields;
 import dao.UserDao;
 import model.Subscription;
+import model.SubscriptionStatus;
 import model.User;
 import model.UserRole;
 
@@ -99,6 +101,34 @@ public class UserDaoImpl implements UserDao {
 		
 		System.out.println(subscriptions.size());
 		return subscriptions;
+	}
+	
+	public void subscribe(long userId, long tariffId, Date startDate, Date endDate) {
+		try (Connection connection = DBManager.getInstance().getConnection();
+	            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO subscription(userId, tariffId, startDate, endDate, status) VALUES (?, ?, ?, ?, ?);")) {
+	            preparedStatement.setLong(1, userId);
+	            preparedStatement.setLong(2, tariffId);
+	            preparedStatement.setObject(3, startDate);
+	            preparedStatement.setObject(4, endDate);
+	            preparedStatement.setString(5, SubscriptionStatus.REQUESTED.toString());
+
+	            System.out.println(preparedStatement.toString());
+	            
+	            preparedStatement.executeUpdate();
+
+	        } catch (SQLException ex) {
+        }
+	}
+	
+	public void unsubscribe(long userId, long tariffId) {
+		try (Connection connection = DBManager.getInstance().getConnection();
+	            PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM subscription WHERE userId=? AND tariffId=?;")) {
+	            preparedStatement.setLong(1, userId);
+	            preparedStatement.setLong(2, tariffId);
+
+	            preparedStatement.executeUpdate();
+	        } catch (SQLException ex) {
+        }
 	}
 	
 }

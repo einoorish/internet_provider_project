@@ -64,7 +64,11 @@
 				            <small class="card-subtitle text-muted align-items-top d-flex justify-content-center">${tariff.price} uah</small> 
 				           	<div class="card-block">
 				            	<div class="card-text my-2">${tariff.description}</div>
-				        	    	<a href="#" class="col-12 card-link btn btn-outline-danger align-items-center justify-content-center">Unsubscribe</a> 
+			            			<c:url value="/controller?command=unsubscribe" var="url">
+									<c:param name="tariffId" value="${tariff.id}" />
+									</c:url>
+					            
+									<a href="${url}" class="col-12 card-link btn btn-outline-danger align-items-center justify-content-center">Unsubscribe</a> 
 				         		</div>
 				   		</div>
         			</div>

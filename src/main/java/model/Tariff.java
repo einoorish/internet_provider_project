@@ -49,6 +49,18 @@ public class Tariff {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+
+	@Override
+	public String toString() {
+		return id+"[\n"
+				+ "\tTitle: " + title
+				+ "\n\tType: " + type.name()
+				+ "\n\tPrice: " + price.toPlainString()
+				+ "\n\tDescription: " + description
+				+ "\n]";
+	}
+	
+	
 	
 
 }

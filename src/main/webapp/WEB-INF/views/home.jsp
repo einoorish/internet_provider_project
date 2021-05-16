@@ -40,7 +40,6 @@
 		<form class="form-inline">
 			<a class="mr-sm-2">EN</a>
             <a class="mr-sm-2">RU</a>
-            <a class="mr-sm-2">UA</a>
             
 			<!-- SignIn/SignUp -->            
 	        <c:set var="username" value="${sessionScope.user.login}" scope="page"/>
@@ -71,9 +70,12 @@
 		  <a class="btn btn-dark btn-block m-0" href="${pageContext.request.contextPath}/controller?menutype=INTERNET">Internet</a>
 		  <a class="btn btn-dark btn-block m-0" href="${pageContext.request.contextPath}/controller?menutype=CABLE">CableTV</a>
 		  <a class="btn btn-dark btn-block m-0" href="${pageContext.request.contextPath}/controller?menutype=IP_TV">IP-TV</a>
-    </div>
+    	</div>
+    	<a class="col-2 btn btn-dark btn-block m-0 fixed-bottom text-white" data-toggle="modal" data-target="#modalDownload">Download all</a>  
+
+		
     
-   <div class="col-10 min-vh-100 offset-2 bg-light"  id="main">
+   <div class="col-10 px-0 min-vh-100 offset-2 bg-light "  id="main">
    		<div class="content">
     		<div class="container">
         		<div class="row py-4">
@@ -81,12 +83,39 @@
 			        <div class="col-md-3">
 		                <div class="card py-2 px-2">
 		                    <div class="card-block">
-		                        <h3 class="card-title align-items-center d-flex justify-content-center mb-1">${tariff.title}</h3>
-		                        <small class="card-subtitle text-muted align-items-top d-flex justify-content-center">${tariff.price} uah</small> 
+					        	<div class="row mb-1 ">	
+			                        <h4 class="col-md-9 card-title d-flex justify-content-center align-items-center">${tariff.title}</h4>
+						        	</div>
+		                    	<small class="card-subtitle text-muted align-items-top d-flex justify-content-center">${tariff.price} uah</small> 
                     			<div class="card-block">
 		                        <div class="card-text my-2">${tariff.description}</div>
 		            
-		               	    	<a href="#" class="col-12 card-link btn btn-outline-primary align-items-center justify-content-center">Subscribe</a> 
+						            <c:if test="${not empty sessionScope.user.login}">
+						            	<c:url value="/controller" var="subscribeUrl">									
+											<c:param name="command" value="subscribe" />
+											<c:param name="tariffId" value="${tariff.id}" />	
+										</c:url>
+						            
+						            	<c:choose>
+						            		<c:when test="${sessionScope.user.role eq 'ADMIN'}">
+						            			<c:url value="/controller" var="editUrl">									
+													<c:param name="command" value="edit" />
+													<c:param name="tariffId" value="${tariff.id}" />	
+												</c:url>
+							            		<div class="row pl-4">
+								            		<a href="${subscribeUrl}" class="card-link btn btn-outline-primary align-items-center justify-content-center">Subscribe</a>
+							            			<a href="${editUrl}" class="card-link btn btn-outline-primary align-items-center justify-content-center">Edit</a>
+							            		</div>
+						            		</c:when>
+						            		<c:otherwise>
+						            			<a href="${subscribeUrl}" class="col-12 card-link btn btn-outline-primary align-items-center justify-content-center">Subscribe</a> 
+						            		</c:otherwise>
+						            	</c:choose>
+										
+						            
+						            </c:if>
+		            
+		               	    	
 		                		</div>
                 			</div>
             			</div>
@@ -97,8 +126,8 @@
 		</div>
     </div>
     
-    </div>
-</div>
+    </div>    
+	</div>
 
 
 <!-- Modals -->
@@ -148,6 +177,36 @@
 					<input name="password" type="password" class="form-control" placeholder="Password" required="required">					
 				</div>
 	            <button class="btn btn-success">Continue</button>
+			</form>								
+	  </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modalDownload" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Download</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      		<c:url value="/controller" var="url">									
+				<c:param name="command" value="download" />
+				<c:param name="tariffType" value="${requestScope.data[0].type}" />	
+			</c:url>
+      
+			<form class="form-horizontal" action="${url}" method="post">
+				<h2>Sort by</h2>
+				<div class="form-group radio">
+				  <label><input type="radio" name="sort" value="title" checked>Title</label>
+				  <br>
+			 	  <label><input type="radio" name="sort" value="price">Price</label>
+				</div>
+			
+	            <button class="btn btn-success">Download</button>
 			</form>								
 	  </div>
     </div>

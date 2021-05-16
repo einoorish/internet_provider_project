@@ -13,6 +13,10 @@ public class CommandHandler{
 	    commands.put("registration", new RegistrationCommand());
 	    commands.put("logout", new LogoutCommand());
 	    commands.put("profile", new MyProfileCommand());
+	    commands.put("subscribe", new SubscribeCommand());
+	    commands.put("unsubscribe", new UnsubscribeCommand());
+	    commands.put("download", new DownloadCommand());
+	    commands.put("edit", new EditCommand());
 	}
 	
 	private CommandHandler() {}

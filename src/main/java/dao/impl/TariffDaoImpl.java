@@ -43,6 +43,25 @@ public class TariffDaoImpl implements dao.TariffDao {
         return result;
 	}
 	
+	public void updateTariff(Tariff tariff) {
+		final String UPDATE_QUERY = "UPDATE tariff SET title=?, type=?, price=?, description=?  WHERE id=?;";
+
+        try (Connection connection = DBManager.getInstance().getConnection()){   
+
+            PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY);
+            preparedStatement.setString(1, tariff.getTitle());
+            preparedStatement.setString(2, tariff.getType().toString());
+            preparedStatement.setString(3, tariff.getPrice().toPlainString());
+            preparedStatement.setString(4, tariff.getDescription());
+            preparedStatement.setLong(5, tariff.getId());
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+	
 	public Tariff getTariffById(long id) {
 		Tariff tariff = null;
 		
@@ -82,6 +101,26 @@ public class TariffDaoImpl implements dao.TariffDao {
         return tariffs;
 	}
 	
+	public List<Tariff> getTariffListByType(TariffType type, String sort) {
+		List<Tariff> tariffs = null;
+
+        try (Connection connection = DBManager.getInstance().getConnection()){
+        	String SELECT_QUERY ="SELECT * FROM tariff WHERE type=? ORDER BY ?;";
+            PreparedStatement preparedStatement = connection.prepareStatement(SELECT_QUERY);
+            preparedStatement.setString(1, type.toString());
+            preparedStatement.setString(2, sort);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            tariffs = getTariffList(resultSet);
+            
+            resultSet.close();
+
+            connection.commit();
+        } catch (SQLException e) {
+        	System.err.println("Message: " + e.getMessage());
+        }
+        return tariffs;
+	}
         
     //TODO: move to utils?
     private List<Tariff> getTariffList(ResultSet resultSet) throws SQLException {
