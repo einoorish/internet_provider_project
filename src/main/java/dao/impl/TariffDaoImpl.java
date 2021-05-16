@@ -42,7 +42,7 @@ public class TariffDaoImpl implements dao.TariffDao {
         return result;
 	}
 	
-	public void updateTariff(Tariff tariff) {
+	public void update(Tariff tariff) {
 		final String UPDATE_QUERY = "UPDATE tariff SET title=?, type=?, price=?, description=?  WHERE id=?;";
 
         try (Connection connection = DBManager.getInstance().getConnection()){   
@@ -58,8 +58,21 @@ public class TariffDaoImpl implements dao.TariffDao {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 	}
+	
+	public void delete(long id) {
+		final String DELETE_QUERY = "DELETE FROM tariff WHERE id=?;";
+
+        try (Connection connection = DBManager.getInstance().getConnection()){   
+            PreparedStatement preparedStatement = connection.prepareStatement(DELETE_QUERY);
+            preparedStatement.setLong(1, id);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 	
 	public Tariff getTariffById(long id) {
 		Tariff tariff = null;

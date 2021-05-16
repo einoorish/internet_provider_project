@@ -15,6 +15,8 @@ public interface TariffDao {
 	
 	public List<Tariff> getTariffListByType(TariffType type, String sort);
 
-	public void updateTariff(Tariff tariff);
+	public void update(Tariff tariff);
+
+	public void delete(long valueOf);
         
 }

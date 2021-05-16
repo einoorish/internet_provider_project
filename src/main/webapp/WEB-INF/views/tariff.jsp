@@ -103,10 +103,10 @@
 			        <div class="col-lg-9">
 			       	<c:choose>
 				        <c:when test="${requestScope.tariff != null}">  
-	                        <input class="form-control"  name="description" type="text" value="${requestScope.tariff.description}" />
+	                        <input class="form-control"  name="description" type="text" maxlength="1024" value="${requestScope.tariff.description}" />
 	                    </c:when>
 				        <c:otherwise>
-	                        <input required class="form-control"  name="description" type="text"/>
+	                        <input required class="form-control"  maxlength="1024" name="description" type="text"/>
 				        </c:otherwise>
 			        </c:choose>
                     </div>
@@ -127,7 +127,12 @@
                 <div class="form-group row">
                     <label class="col-lg-3 col-form-label form-control-label"></label>
                     <div class="col-lg-9">
-                        <input type="button" class="btn btn-danger" value="Delete"/>
+                    	<c:if test="${requestScope.tariff != null}">
+	                    	<c:url value="/save" var="url">									
+								<c:param name="remove" value="${requestScope.tariff.id}" />	
+							</c:url>
+	                        <a href="${url}" class="btn btn-danger">Delete</a>
+                    	</c:if>
                         <input type="reset" class="btn btn-secondary" value="Reset"/>
                         <input type="submit" class="btn btn-primary" value="Save"/>
                     </div>
