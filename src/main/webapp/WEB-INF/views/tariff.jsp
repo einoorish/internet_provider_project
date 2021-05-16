@@ -36,15 +36,35 @@
 <div class="container">
         <!-- edit form column -->
         <div class="col-lg-12 text-lg-center">
-            <h4 class="m-4 p-2">Edit</h4>
-        </div>
+        	<c:choose>
+		        <c:when test="${requestScope.tariff != null}">
+           			<h4 class="m-4 p-2">Edit</h4>
+		        </c:when>
+		        <c:otherwise>
+           			<h4 class="m-4 p-2">Add</h4>
+		        </c:otherwise>
+        	</c:choose>
+        </div> 
+          
              <form enctype='multipart/form-data' method="post" action="${pageContext.request.contextPath}/save?">
-                <input readonly type="hidden" name="id" value="${requestScope.tariff.id}" />
-
-                <div class="form-group form-row">
-                    <label class="col-lg-3 col-form-label form-control-label">Title</label>
-                    <input class="form-control col-lg-9" name="title" type="text" value="${requestScope.tariff.title}" />
-                </div>
+		                
+                <c:if test="${requestScope.tariff != null}">
+                	<input readonly type="hidden" name="id" value="${requestScope.tariff.id}" /> 
+                </c:if>
+		                
+                <div class="form-group row">
+                <label class="col-lg-3 col-form-label form-control-label">Title</label>                
+          		<div class=" col-lg-9">
+		       	<c:choose>
+			        <c:when test="${requestScope.tariff != null}">  
+		                    <input class="form-control" name="title" type="text" value="${requestScope.tariff.title}" />
+					</c:when>
+					<c:otherwise>
+		                    <input required class="form-control" name="title" type="text"/>
+		            </c:otherwise>
+				</c:choose>   
+				</div>
+				</div>             
 
                 <div class="form-group row">
                     <label class="col-lg-3 col-form-label form-control-label">Type</label>
@@ -80,19 +100,34 @@
                 </div>
                 <div class="form-group row">
                     <label class="col-lg-3 col-form-label form-control-label">Description</label>
-                    <div class="col-lg-9">
-                        <input class="form-control"  name="description" type="text" value="${requestScope.tariff.description}" />
+			        <div class="col-lg-9">
+			       	<c:choose>
+				        <c:when test="${requestScope.tariff != null}">  
+	                        <input class="form-control"  name="description" type="text" value="${requestScope.tariff.description}" />
+	                    </c:when>
+				        <c:otherwise>
+	                        <input required class="form-control"  name="description" type="text"/>
+				        </c:otherwise>
+			        </c:choose>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label class="col-lg-3 col-form-label form-control-label">Price</label>
                     <div class="col-lg-9">
-                        <input class="form-control"  name="price" type="number" value="${requestScope.tariff.price}" />
+                        <c:choose>
+				        <c:when test="${requestScope.tariff != null}">  
+	                        <input class="form-control"  name="price" type="number" value="${requestScope.tariff.price}" min=0 step="0.01"/>
+	                    </c:when>
+				        <c:otherwise>
+	                        <input required class="form-control"  name="price" type="number" min=0 step="0.01"/>
+				        </c:otherwise>
+			        </c:choose>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label class="col-lg-3 col-form-label form-control-label"></label>
                     <div class="col-lg-9">
+                        <input type="button" class="btn btn-danger" value="Delete"/>
                         <input type="reset" class="btn btn-secondary" value="Reset"/>
                         <input type="submit" class="btn btn-primary" value="Save"/>
                     </div>

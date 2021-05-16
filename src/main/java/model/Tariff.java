@@ -9,6 +9,13 @@ public class Tariff {
 	private BigDecimal price;
 	private String description;
 	
+	public Tariff(String title, TariffType type, BigDecimal price, String description){
+		this.title = title;
+		this.type = type;
+		this.price = price;
+		this.description = description;
+	}
+	
 	public Tariff(long id, String title, TariffType type, BigDecimal price, String description){
 		this.id = id;
 		this.title = title;

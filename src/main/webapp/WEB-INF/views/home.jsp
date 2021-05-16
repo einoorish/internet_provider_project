@@ -75,7 +75,7 @@
 
 		
     
-   <div class="col-10 px-0 min-vh-100 offset-2 bg-light "  id="main">
+   <div class="col-10 px-0 min-vh-100 offset-2 bg-light ">
    		<div class="content">
     		<div class="container">
         		<div class="row py-4">
@@ -83,9 +83,7 @@
 			        <div class="col-md-3">
 		                <div class="card py-2 px-2">
 		                    <div class="card-block">
-					        	<div class="row mb-1 ">	
-			                        <h4 class="col-md-9 card-title d-flex justify-content-center align-items-center">${tariff.title}</h4>
-						        	</div>
+			                    <h4 class="card-title d-flex justify-content-center align-items-center">${tariff.title}</h4>
 		                    	<small class="card-subtitle text-muted align-items-top d-flex justify-content-center">${tariff.price} uah</small> 
                     			<div class="card-block">
 		                        <div class="card-text my-2">${tariff.description}</div>
@@ -93,7 +91,7 @@
 						            <c:if test="${not empty sessionScope.user.login}">
 						            	<c:url value="/controller" var="subscribeUrl">									
 											<c:param name="command" value="subscribe" />
-											<c:param name="tariffId" value="${tariff.id}" />	
+											<c:param name="tariffId" value="${tariff.id}"/>	
 										</c:url>
 						            
 						            	<c:choose>
@@ -102,7 +100,7 @@
 													<c:param name="command" value="edit" />
 													<c:param name="tariffId" value="${tariff.id}" />	
 												</c:url>
-							            		<div class="row pl-4">
+							            		<div class="row d-flex justify-content-center ">
 								            		<a href="${subscribeUrl}" class="card-link btn btn-outline-primary align-items-center justify-content-center">Subscribe</a>
 							            			<a href="${editUrl}" class="card-link btn btn-outline-primary align-items-center justify-content-center">Edit</a>
 							            		</div>
@@ -111,23 +109,27 @@
 						            			<a href="${subscribeUrl}" class="col-12 card-link btn btn-outline-primary align-items-center justify-content-center">Subscribe</a> 
 						            		</c:otherwise>
 						            	</c:choose>
-										
-						            
 						            </c:if>
-		            
-		               	    	
 		                		</div>
                 			</div>
             			</div>
+             			<div class="mt-4"> </div>
              		</div>
      				</c:forEach>
- 				</div>
-   			</div>
+     				<c:if test="${sessionScope.user.role eq 'ADMIN'}">
+	     				<div class="col-md-3 mt-4">
+			                <div class="card bg-primary py-2 pl-2 d-flex justify-content-center align-items-center">
+			                	<a style="color:white;" href="${pageContext.request.contextPath}/controller?command=edit">Add</a>
+	               			</div>
+	           			</div>
+					</c:if>           			
+           		</div>
+			</div>
 		</div>
-    </div>
+	</div>
+ </div>
     
     </div>    
-	</div>
 
 
 <!-- Modals -->

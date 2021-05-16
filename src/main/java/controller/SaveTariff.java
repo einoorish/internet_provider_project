@@ -7,10 +7,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import constants.URL;
-import controller.commands.Command;
-import controller.commands.CommandHandler;
 import dao.TariffDao;
 import dao.impl.TariffDaoImpl;
 import model.Tariff;
@@ -29,13 +26,22 @@ public class SaveTariff extends HttpServlet {
 		TariffDao dao = new TariffDaoImpl();
 		
 		//TODO: use const values
-		long id = Long.valueOf(request.getParameter("id"));
-		String title = request.getParameter("title");
-		BigDecimal price = new BigDecimal(request.getParameter("price"));
-		TariffType type = TariffType.valueOf(request.getParameter("type"));
-		String description = request.getParameter("description");
+		if(request.getParameter("id")!=null) {
+			long id = Long.valueOf(request.getParameter("id"));
+			String title = request.getParameter("title");
+			BigDecimal price = new BigDecimal(request.getParameter("price"));
+			TariffType type = TariffType.valueOf(request.getParameter("type"));
+			String description = request.getParameter("description");	
 
-		dao.updateTariff(new Tariff(id, title, type, price, description));
+			dao.updateTariff(new Tariff(id, title, type, price, description));
+        } else {
+    		String title = request.getParameter("title");
+    		BigDecimal price = new BigDecimal(request.getParameter("price"));
+    		TariffType type = TariffType.valueOf(request.getParameter("type"));
+    		String description = request.getParameter("description");	
+
+    		dao.add(new Tariff(title, type, price, description));
+        }
 		doGet(request, response);
 	}
 

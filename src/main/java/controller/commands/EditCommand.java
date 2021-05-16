@@ -12,9 +12,11 @@ public class EditCommand implements Command {
 	@Override
 	public String execute(HttpServletRequest request) {
 		TariffDao dao = new TariffDaoImpl();
-		Tariff tariff = dao.getTariffById(Integer.valueOf(request.getParameter("tariffId")));
 		
-		request.setAttribute("tariff", tariff);
+		if(request.getParameter("tariffId")!=null) {
+			Tariff tariff = dao.getTariffById(Integer.valueOf(request.getParameter("tariffId")));
+			request.setAttribute("tariff", tariff);
+		}
 
 		return URL.TARIFF;
 	}

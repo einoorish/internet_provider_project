@@ -14,9 +14,9 @@ public class TariffDaoImpl implements dao.TariffDao {
 
 	public int add(Tariff tariff) {
 		String INSERT_QUERY = "INSERT INTO tariff" +
-	            "  (id, title, type, price, description) VALUES " +
+	            "  (title, type, price, description) VALUES " +
 	            " (?, ?, ?, ?);";
-		
+		 
 		int result = 0;
 
         try {
@@ -27,11 +27,10 @@ public class TariffDaoImpl implements dao.TariffDao {
 
         try (Connection connection = DBManager.getInstance().getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_QUERY)) {
-            preparedStatement.setInt(1, 1);
-            preparedStatement.setString(2, tariff.getTitle());
-            preparedStatement.setString(3, tariff.getType().toString());
-            preparedStatement.setString(4, tariff.getPrice().toString());
-            preparedStatement.setString(5, tariff.getDescription().toString());
+            preparedStatement.setString(1, tariff.getTitle());
+            preparedStatement.setString(2, tariff.getType().toString());
+            preparedStatement.setString(3, tariff.getPrice().toString());
+            preparedStatement.setString(4, tariff.getDescription().toString());
 
             System.out.println(preparedStatement);
             // Execute or update query
