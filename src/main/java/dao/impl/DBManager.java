@@ -9,6 +9,10 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+import org.apache.log4j.Logger;
+
+import controller.SaveTariff;
+
 
 public class DBManager {
     private static DBManager dbManager;

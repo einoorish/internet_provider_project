@@ -7,12 +7,16 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import model.Tariff;
 import model.TariffType;
 
 public class TariffDaoImpl implements dao.TariffDao {
+    private final static Logger LOG = Logger.getLogger(TariffDaoImpl.class.getSimpleName());
 
 	public int add(Tariff tariff) {
+		LOG.info("ADD method started");
 		String INSERT_QUERY = "INSERT INTO tariff" +
 	            "  (title, type, price, description) VALUES " +
 	            " (?, ?, ?, ?);";
@@ -33,16 +37,17 @@ public class TariffDaoImpl implements dao.TariffDao {
             preparedStatement.setString(4, tariff.getDescription().toString());
 
             System.out.println(preparedStatement);
-            // Execute or update query
+            LOG.debug("QUERY: "+preparedStatement.toString());
             result = preparedStatement.executeUpdate();
 
         } catch (SQLException e) {
-        	System.err.println("Message: " + e.getMessage());
+            LOG.error(e.getMessage());
         }
         return result;
 	}
 	
 	public void update(Tariff tariff) {
+		LOG.info("UPDATE method started");
 		final String UPDATE_QUERY = "UPDATE tariff SET title=?, type=?, price=?, description=?  WHERE id=?;";
 
         try (Connection connection = DBManager.getInstance().getConnection()){   
@@ -53,23 +58,24 @@ public class TariffDaoImpl implements dao.TariffDao {
             preparedStatement.setString(3, tariff.getPrice().toPlainString());
             preparedStatement.setString(4, tariff.getDescription());
             preparedStatement.setLong(5, tariff.getId());
+            LOG.debug("QUERY: "+preparedStatement.toString());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+            LOG.error(e.getMessage());
 		}
 	}
 	
 	public void delete(long id) {
+		LOG.info("DELETE method started");
 		final String DELETE_QUERY = "DELETE FROM tariff WHERE id=?;";
 
         try (Connection connection = DBManager.getInstance().getConnection()){   
             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_QUERY);
             preparedStatement.setLong(1, id);
             preparedStatement.executeUpdate();
+            LOG.debug("QUERY: "+preparedStatement.toString());
         } catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+            LOG.error(e.getMessage());
 		}
 	}
 
@@ -83,23 +89,26 @@ public class TariffDaoImpl implements dao.TariffDao {
             preparedStatement.setLong(1, id);
 
             ResultSet resultSet = preparedStatement.executeQuery();
+            LOG.debug("QUERY: "+preparedStatement.toString());
             tariff = getTariff(resultSet);
             resultSet.close();
 
             connection.commit();
         } catch (SQLException e) {
-        	System.err.println("Message: " + e.getMessage());
+            LOG.error(e.getMessage());
         }
         return tariff;
 	}
 	
 	public List<Tariff> getTariffListByType(TariffType type) {
+		LOG.info("GET TARIFF BY TYPE method started");
 		List<Tariff> tariffs = null;
 
         try (Connection connection = DBManager.getInstance().getConnection()){
         	String SELECT_QUERY ="SELECT * FROM tariff WHERE type=?";
             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_QUERY);
             preparedStatement.setString(1, type.toString());
+            LOG.debug("QUERY: "+preparedStatement.toString());
 
             ResultSet resultSet = preparedStatement.executeQuery();
             tariffs = getTariffList(resultSet);
@@ -108,12 +117,14 @@ public class TariffDaoImpl implements dao.TariffDao {
 
             connection.commit();
         } catch (SQLException e) {
-        	System.err.println("Message: " + e.getMessage());
+            LOG.error(e.getMessage());
         }
         return tariffs;
 	}
 	
 	public List<Tariff> getTariffListByType(TariffType type, String sort) {
+		LOG.info("GET TARIFFS BY TYPE method started");
+		LOG.info("RECORDS ARE SORTED BY "+sort);
 		List<Tariff> tariffs = null;
 
         try (Connection connection = DBManager.getInstance().getConnection()){
@@ -121,15 +132,15 @@ public class TariffDaoImpl implements dao.TariffDao {
             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_QUERY);
             preparedStatement.setString(1, type.toString());
             preparedStatement.setString(2, sort);
+            LOG.debug("QUERY: "+preparedStatement.toString());
 
             ResultSet resultSet = preparedStatement.executeQuery();
             tariffs = getTariffList(resultSet);
-            
             resultSet.close();
-
             connection.commit();
+
         } catch (SQLException e) {
-        	System.err.println("Message: " + e.getMessage());
+            LOG.error(e.getMessage());
         }
         return tariffs;
 	}
