@@ -15,8 +15,8 @@ public class CommandHandler{
 	    commands.put("profile", new MyProfileCommand());
 	    commands.put("subscribe", new SubscribeCommand());
 	    commands.put("unsubscribe", new UnsubscribeCommand());
-	    commands.put("download", new DownloadCommand());
 	    commands.put("edit", new EditCommand());
+	    commands.put("download", new DownloadCommand());
 	}
 	
 	private CommandHandler() {}

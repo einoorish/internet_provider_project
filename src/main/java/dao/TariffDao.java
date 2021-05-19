@@ -12,11 +12,11 @@ public interface TariffDao {
 	public Tariff getTariffById(long id);
 	
 	public List<Tariff> getTariffListByType(TariffType type);
-	
-	public List<Tariff> getTariffListByType(TariffType type, String sort);
 
 	public void update(Tariff tariff);
 
 	public void delete(long valueOf);
+
+	public List<Tariff> getSortedTariffList(String sort);
         
 }

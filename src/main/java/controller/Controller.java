@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 
 import controller.commands.Command;
@@ -26,6 +27,7 @@ public class Controller extends HttpServlet {
 			response.sendRedirect(uri);
         } else {
 			LOG.debug("Forward: "+uri);
+			BasicConfigurator.configure();
             request.getRequestDispatcher(uri).forward(request, response);
         }
 	}

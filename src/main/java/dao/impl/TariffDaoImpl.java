@@ -122,19 +122,15 @@ public class TariffDaoImpl implements dao.TariffDao {
         return tariffs;
 	}
 	
-	public List<Tariff> getTariffListByType(TariffType type, String sort) {
-		LOG.info("GET TARIFFS BY TYPE method started");
-		LOG.info("RECORDS ARE SORTED BY "+sort);
+	public List<Tariff> getSortedTariffList(String sort) {
+		LOG.info("GET SORTED TARIFFS method started");
 		List<Tariff> tariffs = null;
 
         try (Connection connection = DBManager.getInstance().getConnection()){
-        	String SELECT_QUERY ="SELECT * FROM tariff WHERE type=? ORDER BY ?;";
-            PreparedStatement preparedStatement = connection.prepareStatement(SELECT_QUERY);
-            preparedStatement.setString(1, type.toString());
-            preparedStatement.setString(2, sort);
-            LOG.debug("QUERY: "+preparedStatement.toString());
+        	String SELECT_QUERY ="SELECT * FROM tariff ORDER BY "+sort+" ASC;";
+            LOG.debug("QUERY: "+SELECT_QUERY);
 
-            ResultSet resultSet = preparedStatement.executeQuery();
+            ResultSet resultSet = connection.createStatement().executeQuery(SELECT_QUERY);
             tariffs = getTariffList(resultSet);
             resultSet.close();
             connection.commit();

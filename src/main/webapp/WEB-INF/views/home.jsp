@@ -197,7 +197,6 @@
       <div class="modal-body">
       		<c:url value="/controller" var="url">									
 				<c:param name="command" value="download" />
-				<c:param name="tariffType" value="${requestScope.data[0].type}" />	
 			</c:url>
       
 			<form class="form-horizontal" action="${url}" method="post">
