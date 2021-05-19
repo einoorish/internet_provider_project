@@ -34,7 +34,6 @@
 
 
 <div class="container">
-        <!-- edit form column -->
         <div class="col-lg-12 text-lg-center">
         	<c:choose>
 		        <c:when test="${requestScope.tariff != null}">
@@ -46,98 +45,98 @@
         	</c:choose>
         </div> 
           
-             <form enctype='multipart/form-data' method="post" action="${pageContext.request.contextPath}/save?">
+        <form enctype='multipart/form-data' method="post" action="${pageContext.request.contextPath}/save?">
 		                
-                <c:if test="${requestScope.tariff != null}">
-                	<input readonly type="hidden" name="id" value="${requestScope.tariff.id}" /> 
-                </c:if>
+            <c:if test="${requestScope.tariff != null}">
+            	<input readonly type="hidden" name="id" value="${requestScope.tariff.id}" /> 
+            </c:if>
 		                
-                <div class="form-group row">
-                <label class="col-lg-3 col-form-label form-control-label">Title</label>                
-          		<div class=" col-lg-9">
-		       	<c:choose>
-			        <c:when test="${requestScope.tariff != null}">  
-		                    <input class="form-control" name="title" type="text" value="${requestScope.tariff.title}" />
-					</c:when>
-					<c:otherwise>
-		                    <input required class="form-control" name="title" type="text"/>
-		            </c:otherwise>
-				</c:choose>   
-				</div>
-				</div>             
-
-                <div class="form-group row">
-                    <label class="col-lg-3 col-form-label form-control-label">Type</label>
-                    <div class="col-lg-9">
-     	       			  <c:set var="type" value="${requestScope.tariff.type}" scope="page"/>
-     	       			  <c:choose>
-						    <c:when test="${type eq 'PHONE'}">
-							  	<input type="radio" name="type" value="PHONE" checked> Phone
-	 					 	    <input class="ml-4" type="radio" name="type" value="INTERNET"> Internet
-						 	    <input class="ml-4" type="radio" name="type" value="CABLE"> Cable
-						 	    <input class="ml-4" type="radio" name="type" value="IP_TV"> IP-TV
-						    </c:when>
-						    <c:when test="${type eq 'INTERNET'}">
-							  	<input type="radio" name="type" value="PHONE"> Phone
-	 					 	    <input class="ml-4" type="radio" name="type" value="INTERNET" checked> Internet
-						 	    <input class="ml-4" type="radio" name="type" value="CABLE"> Cable
-						 	    <input class="ml-4" type="radio" name="type" value="IP_TV"> IP-TV
-						    </c:when>
-						    <c:when test="${type eq 'CABLE'}">
-							  	<input type="radio" name="type" value="PHONE"> Phone
-	 					 	    <input class="ml-4" type="radio" name="type" value="INTERNET"> Internet
-						 	    <input class="ml-4" type="radio" name="type" value="CABLE" checked> Cable
-						 	    <input class="ml-4" type="radio" name="type" value="IP_TV"> IP-TV
-						    </c:when>
-						    <c:otherwise>
-							  	<input type="radio" name="type" value="PHONE"> Phone
-	 					 	    <input class="ml-4" type="radio" name="type" value="INTERNET"> Internet
-						 	    <input class="ml-4" type="radio" name="type" value="CABLE"> Cable
-						 	    <input class="ml-4" type="radio" name="type" value="IP_TV" checked> IP-TV
-						    </c:otherwise>
-						</c:choose>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-lg-3 col-form-label form-control-label">Description</label>
-			        <div class="col-lg-9">
-			       	<c:choose>
+            <div class="form-group row">
+	            <label class="col-lg-3 col-form-label form-control-label">Title</label>                
+	      		<div class=" col-lg-9">
+		  		   	<c:choose>
 				        <c:when test="${requestScope.tariff != null}">  
-	                        <input class="form-control"  name="description" type="text" maxlength="1024" value="${requestScope.tariff.description}" />
-	                    </c:when>
-				        <c:otherwise>
-	                        <input required class="form-control"  maxlength="1024" name="description" type="text"/>
-				        </c:otherwise>
-			        </c:choose>
-                    </div>
+			                   <input class="form-control" name="title" type="text" value="${requestScope.tariff.title}" />
+						</c:when>
+						<c:otherwise>
+			                    <input required class="form-control" name="title" type="text"/>
+			            </c:otherwise>
+					</c:choose>   
+				</div>
+			</div>             
+
+            <div class="form-group row">
+                <label class="col-lg-3 col-form-label form-control-label">Type</label>
+                <div class="col-lg-9">
+    				<c:set var="type" value="${requestScope.tariff.type}" scope="page"/>
+ 	       			<c:choose>
+					    <c:when test="${type eq 'PHONE'}">
+						  	<input type="radio" name="type" value="PHONE" checked> Phone
+						 	    <input class="ml-4" type="radio" name="type" value="INTERNET"> Internet
+					 	    <input class="ml-4" type="radio" name="type" value="CABLE"> Cable
+					 	    <input class="ml-4" type="radio" name="type" value="IP_TV"> IP-TV
+					    </c:when>
+					    <c:when test="${type eq 'INTERNET'}">
+						  	<input type="radio" name="type" value="PHONE"> Phone
+						 	    <input class="ml-4" type="radio" name="type" value="INTERNET" checked> Internet
+					 	    <input class="ml-4" type="radio" name="type" value="CABLE"> Cable
+					 	    <input class="ml-4" type="radio" name="type" value="IP_TV"> IP-TV
+					    </c:when>
+					    <c:when test="${type eq 'CABLE'}">
+						  	<input type="radio" name="type" value="PHONE"> Phone
+						 	    <input class="ml-4" type="radio" name="type" value="INTERNET"> Internet
+					 	    <input class="ml-4" type="radio" name="type" value="CABLE" checked> Cable
+					 	    <input class="ml-4" type="radio" name="type" value="IP_TV"> IP-TV
+					    </c:when>
+					    <c:otherwise>
+						  	<input type="radio" name="type" value="PHONE"> Phone
+						 	    <input class="ml-4" type="radio" name="type" value="INTERNET"> Internet
+					 	    <input class="ml-4" type="radio" name="type" value="CABLE"> Cable
+					 	    <input class="ml-4" type="radio" name="type" value="IP_TV" checked> IP-TV
+					    </c:otherwise>
+					</c:choose>
                 </div>
-                <div class="form-group row">
-                    <label class="col-lg-3 col-form-label form-control-label">Price</label>
-                    <div class="col-lg-9">
-                        <c:choose>
+            </div>
+            <div class="form-group row">
+                <label class="col-lg-3 col-form-label form-control-label">Description</label>
+       			<div class="col-lg-9">
+		      	<c:choose>
+		        	<c:when test="${requestScope.tariff != null}">  
+	                     <input class="form-control"  name="description" type="text" maxlength="1024" value="${requestScope.tariff.description}" />
+	                </c:when>
+	    		    <c:otherwise>
+	                     <input required class="form-control"  maxlength="1024" name="description" type="text"/>
+		        	</c:otherwise>
+		        </c:choose>
+                </div>
+            </div>
+           	<div class="form-group row">
+                <label class="col-lg-3 col-form-label form-control-label">Price</label>
+                <div class="col-lg-9">
+                    <c:choose>
 				        <c:when test="${requestScope.tariff != null}">  
 	                        <input class="form-control"  name="price" type="number" value="${requestScope.tariff.price}" min=0 step="0.01"/>
 	                    </c:when>
 				        <c:otherwise>
 	                        <input required class="form-control"  name="price" type="number" min=0 step="0.01"/>
 				        </c:otherwise>
-			        </c:choose>
-                    </div>
+	        	</c:choose>
+   	            </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-lg-3 col-form-label form-control-label"></label>
+                <div class="col-lg-9">
+                	<c:if test="${requestScope.tariff != null}">
+	                 	<c:url value="/save" var="url">									
+							<c:param name="remove" value="${requestScope.tariff.id}" />	
+						</c:url>
+	                    <a href="${url}" class="btn btn-danger">Delete</a>
+                	</c:if>
+                    <input type="reset" class="btn btn-secondary" value="Reset"/>
+                    <input type="submit" class="btn btn-primary" value="Save"/>
                 </div>
-                <div class="form-group row">
-                    <label class="col-lg-3 col-form-label form-control-label"></label>
-                    <div class="col-lg-9">
-                    	<c:if test="${requestScope.tariff != null}">
-	                    	<c:url value="/save" var="url">									
-								<c:param name="remove" value="${requestScope.tariff.id}" />	
-							</c:url>
-	                        <a href="${url}" class="btn btn-danger">Delete</a>
-                    	</c:if>
-                        <input type="reset" class="btn btn-secondary" value="Reset"/>
-                        <input type="submit" class="btn btn-primary" value="Save"/>
-                    </div>
-                </div>
-            </form>
+            </div>
+        </form>
 </div>
 
 </body>

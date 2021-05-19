@@ -12,6 +12,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import constants.Fields;
+import constants.Queries;
 import dao.UserDao;
 import model.Subscription;
 import model.SubscriptionStatus;
@@ -23,33 +24,20 @@ public class UserDaoImpl implements UserDao {
 
 	public long register(User user) {
 		LOG.info("REGISTER method started");
-		String INSERT_QUERY = "INSERT INTO user" +
-	            "  (login, password, funds, role) VALUES " +
-	            " (?, ?, ?, ?);";
-		
 		int result = 0;
-
-        try {
-			Class.forName("com.mysql.jdbc.Driver");
-		} catch (ClassNotFoundException e1) {
-        	e1.printStackTrace();
-		}
-
-        try (Connection connection = DriverManager
-            .getConnection("jdbc:mysql://localhost:3306/internet_provider?allowPublicKeyRetrieval=true&useSSL=false", "root", "root");
-
-            PreparedStatement preparedStatement = connection.prepareStatement(INSERT_QUERY)) {
+		
+        try (Connection connection = DBManager.getInstance().getConnection()){
+            PreparedStatement preparedStatement = connection.prepareStatement(Queries.USER_INSERT);
             preparedStatement.setString(1, user.getLogin());
             preparedStatement.setString(2, user.getPassword());
             preparedStatement.setString(3, user.getFunds().toString());
             preparedStatement.setString(4, user.getRole().toString());
     		LOG.debug(preparedStatement.toString());
     		
-            System.out.println(preparedStatement);
             result = preparedStatement.executeUpdate();
 
         } catch (SQLException e) {
-        	System.err.println("Message: " + e.getMessage());
+        	LOG.error(e.getMessage());
         }
         return result;
 	}
@@ -58,29 +46,18 @@ public class UserDaoImpl implements UserDao {
     public User getUserByLogin(String login) {
 		LOG.info("GET USER BY LOGIN method started");
         User user = null;
-        try (Connection connection = DBManager.getInstance().getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM user WHERE login=?")) {
+        try (Connection connection = DBManager.getInstance().getConnection()){
+            PreparedStatement preparedStatement = connection.prepareStatement(Queries.USER_GET_BY_LOGIN);
             preparedStatement.setString(1, login);
 
     		LOG.debug(preparedStatement.toString());
             user = getUserFromPreparedStatement(preparedStatement);
 
             connection.commit();
-        } catch (SQLException ex) {
+            
+        } catch (SQLException e) {
+        	LOG.error(e.getMessage());
         }
-        return user;
-    }
-	
-	private User getUserFromPreparedStatement(PreparedStatement preparedStatement) throws SQLException {
-        User user = null;
-        ResultSet resultSet = preparedStatement.executeQuery();
-        if (resultSet.next()) {
-        	//TODO: use builder pattern?
-            user = new User(resultSet.getLong(Fields.USER_ID), resultSet.getString(Fields.USER_LOGIN), 
-            		    resultSet.getString(Fields.USER_PASSWORD), resultSet.getBigDecimal(Fields.USER_FUNDS), 
-            		    UserRole.valueOf(resultSet.getString(Fields.USER_ROLE)));
-        }
-        resultSet.close();
         return user;
     }
 
@@ -89,7 +66,7 @@ public class UserDaoImpl implements UserDao {
 		LOG.info("GET USER SUBSCRIPTIONS method started");
 		List<Subscription> subscriptions = new ArrayList<>();
 		try (Connection connection = DBManager.getInstance().getConnection();
-	            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM subscription WHERE userId=?")) {
+	            PreparedStatement preparedStatement = connection.prepareStatement(Queries.USER_GET_SUBSCRIPTIONS)) {
 	            preparedStatement.setLong(1, id);
 	    		LOG.debug(preparedStatement.toString());
 
@@ -104,43 +81,57 @@ public class UserDaoImpl implements UserDao {
 	            resultSet.close();
 
 	            connection.commit();
-	        } catch (SQLException ex) {
-        }
-		
-		System.out.println(subscriptions.size());
+	            
+	        } catch (SQLException e) {
+	        	LOG.error(e.getMessage());
+        	}
 		return subscriptions;
 	}
 	
 	public void subscribe(long userId, long tariffId, Date startDate, Date endDate) {
 		LOG.info("SUBSCRIBE method started");
-		try (Connection connection = DBManager.getInstance().getConnection();
-	            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO subscription(userId, tariffId, startDate, endDate, status) VALUES (?, ?, ?, ?, ?);")) {
-	            preparedStatement.setLong(1, userId);
-	            preparedStatement.setLong(2, tariffId);
-	            preparedStatement.setObject(3, startDate);
-	            preparedStatement.setObject(4, endDate);
-	            preparedStatement.setString(5, SubscriptionStatus.REQUESTED.toString());
-	    		LOG.debug(preparedStatement.toString());
+		try (Connection connection = DBManager.getInstance().getConnection()){
+            PreparedStatement preparedStatement = connection.prepareStatement(Queries.USER_SUBSCRIBE); 
+            preparedStatement.setLong(1, userId);
+            preparedStatement.setLong(2, tariffId);
+            preparedStatement.setObject(3, startDate);
+            preparedStatement.setObject(4, endDate);
+            preparedStatement.setString(5, SubscriptionStatus.REQUESTED.toString());
+    		LOG.debug(preparedStatement.toString());
+    		
+            preparedStatement.executeUpdate();
 
-	            System.out.println(preparedStatement.toString());
-	            
-	            preparedStatement.executeUpdate();
-
-	        } catch (SQLException ex) {
+        } catch (SQLException e) {
+        	LOG.error(e.getMessage());
         }
 	}
 	
 	public void unsubscribe(long userId, long tariffId) {
 		LOG.info("SUBSCRIBE method started");
 		try (Connection connection = DBManager.getInstance().getConnection();
-	            PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM subscription WHERE userId=? AND tariffId=?;")) {
+	            PreparedStatement preparedStatement = connection.prepareStatement(Queries.USER_UNSUBSCRIBE)) {
 	            preparedStatement.setLong(1, userId);
 	            preparedStatement.setLong(2, tariffId);
 	    		LOG.debug(preparedStatement.toString());
 
 	            preparedStatement.executeUpdate();
-	        } catch (SQLException ex) {
+	            
+        } catch (SQLException e) {
+	        	LOG.error(e.getMessage());
         }
 	}
 	
+	// -------  UTILS  --------
+	
+	private User getUserFromPreparedStatement(PreparedStatement preparedStatement) throws SQLException {
+        User user = null;
+        try(ResultSet resultSet = preparedStatement.executeQuery()){
+        	if (resultSet.next()) {
+                user = new User(resultSet.getLong(Fields.USER_ID), resultSet.getString(Fields.USER_LOGIN), 
+                		    resultSet.getString(Fields.USER_PASSWORD), resultSet.getBigDecimal(Fields.USER_FUNDS), 
+                		    UserRole.valueOf(resultSet.getString(Fields.USER_ROLE)));
+            }
+        }
+        return user;
+    }
 }

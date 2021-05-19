@@ -98,7 +98,7 @@
 						            		<c:when test="${sessionScope.user.role eq 'ADMIN'}">
 						            			<c:url value="/controller" var="editUrl">									
 													<c:param name="command" value="edit" />
-													<c:param name="tariffId" value="${tariff.id}" />	
+													<c:param name="id" value="${tariff.id}" />	
 												</c:url>
 							            		<div class="row d-flex justify-content-center ">
 								            		<a href="${subscribeUrl}" class="card-link btn btn-outline-primary align-items-center justify-content-center">Subscribe</a>

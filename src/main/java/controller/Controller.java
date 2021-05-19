@@ -17,6 +17,11 @@ public class Controller extends HttpServlet {
 	private static final long serialVersionUID = -2670825831853246200L;
     private final static Logger LOG = Logger.getLogger(Controller.class.getSimpleName());
     
+    static {
+    	//for Log4j
+		BasicConfigurator.configure();
+    }
+    
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String commandName = request.getParameter("command");
 		Command command = CommandHandler.get(commandName);
@@ -27,7 +32,6 @@ public class Controller extends HttpServlet {
 			response.sendRedirect(uri);
         } else {
 			LOG.debug("Forward: "+uri);
-			BasicConfigurator.configure();
             request.getRequestDispatcher(uri).forward(request, response);
         }
 	}

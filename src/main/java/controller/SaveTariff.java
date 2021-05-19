@@ -43,7 +43,7 @@ public class SaveTariff extends HttpServlet {
 			dao.update(new Tariff(id, title, type, price, description));
 			LOG.debug("Done updating tariff");
         } else {
-    		dao.add(new Tariff(title, type, price, description));
+    		dao.insert(new Tariff(title, type, price, description));
 			LOG.debug("Done adding tariff");
         }
 		doGet(request, response);

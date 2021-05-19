@@ -7,7 +7,7 @@ import model.TariffType;
 
 public interface TariffDao {
 
-	public int add(Tariff tariff);
+	public int insert(Tariff tariff);
 	
 	public Tariff getTariffById(long id);
 	

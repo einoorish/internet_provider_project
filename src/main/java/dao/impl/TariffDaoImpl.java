@@ -9,37 +9,27 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import constants.Queries;
 import model.Tariff;
 import model.TariffType;
 
 public class TariffDaoImpl implements dao.TariffDao {
     private final static Logger LOG = Logger.getLogger(TariffDaoImpl.class.getSimpleName());
 
-	public int add(Tariff tariff) {
-		LOG.info("ADD method started");
-		String INSERT_QUERY = "INSERT INTO tariff" +
-	            "  (title, type, price, description) VALUES " +
-	            " (?, ?, ?, ?);";
-		 
+	public int insert(Tariff tariff) {
+		LOG.info("INSERT method started");
 		int result = 0;
 
-        try {
-			Class.forName("com.mysql.jdbc.Driver");
-		} catch (ClassNotFoundException e1) {
-        	e1.printStackTrace();
-		}
-
         try (Connection connection = DBManager.getInstance().getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(INSERT_QUERY)) {
+            PreparedStatement preparedStatement = connection.prepareStatement(Queries.TARIFF_INSERT)) {
             preparedStatement.setString(1, tariff.getTitle());
             preparedStatement.setString(2, tariff.getType().toString());
             preparedStatement.setString(3, tariff.getPrice().toString());
             preparedStatement.setString(4, tariff.getDescription().toString());
 
-            System.out.println(preparedStatement);
             LOG.debug("QUERY: "+preparedStatement.toString());
             result = preparedStatement.executeUpdate();
-
+          
         } catch (SQLException e) {
             LOG.error(e.getMessage());
         }
@@ -48,18 +38,19 @@ public class TariffDaoImpl implements dao.TariffDao {
 	
 	public void update(Tariff tariff) {
 		LOG.info("UPDATE method started");
-		final String UPDATE_QUERY = "UPDATE tariff SET title=?, type=?, price=?, description=?  WHERE id=?;";
 
         try (Connection connection = DBManager.getInstance().getConnection()){   
 
-            PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY);
+            PreparedStatement preparedStatement = connection.prepareStatement(Queries.TARIFF_UPDATE);
             preparedStatement.setString(1, tariff.getTitle());
             preparedStatement.setString(2, tariff.getType().toString());
             preparedStatement.setString(3, tariff.getPrice().toPlainString());
             preparedStatement.setString(4, tariff.getDescription());
             preparedStatement.setLong(5, tariff.getId());
+            
             LOG.debug("QUERY: "+preparedStatement.toString());
             preparedStatement.executeUpdate();
+        
         } catch (SQLException e) {
             LOG.error(e.getMessage());
 		}
@@ -67,10 +58,9 @@ public class TariffDaoImpl implements dao.TariffDao {
 	
 	public void delete(long id) {
 		LOG.info("DELETE method started");
-		final String DELETE_QUERY = "DELETE FROM tariff WHERE id=?;";
 
         try (Connection connection = DBManager.getInstance().getConnection()){   
-            PreparedStatement preparedStatement = connection.prepareStatement(DELETE_QUERY);
+            PreparedStatement preparedStatement = connection.prepareStatement(Queries.TARIFF_DELETE);
             preparedStatement.setLong(1, id);
             preparedStatement.executeUpdate();
             LOG.debug("QUERY: "+preparedStatement.toString());
@@ -81,11 +71,11 @@ public class TariffDaoImpl implements dao.TariffDao {
 
 	
 	public Tariff getTariffById(long id) {
+		LOG.info("GET TARIFF BY ID method started");
 		Tariff tariff = null;
 		
         try (Connection connection = DBManager.getInstance().getConnection()){   	
-        	String SELECT_QUERY ="SELECT * FROM tariff WHERE id=?;";
-            PreparedStatement preparedStatement = connection.prepareStatement(SELECT_QUERY);
+            PreparedStatement preparedStatement = connection.prepareStatement(Queries.TARIFF_GET_BY_ID);
             preparedStatement.setLong(1, id);
 
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -105,8 +95,7 @@ public class TariffDaoImpl implements dao.TariffDao {
 		List<Tariff> tariffs = null;
 
         try (Connection connection = DBManager.getInstance().getConnection()){
-        	String SELECT_QUERY ="SELECT * FROM tariff WHERE type=?";
-            PreparedStatement preparedStatement = connection.prepareStatement(SELECT_QUERY);
+            PreparedStatement preparedStatement = connection.prepareStatement(Queries.TARIFF_GET_BY_TYPE);
             preparedStatement.setString(1, type.toString());
             LOG.debug("QUERY: "+preparedStatement.toString());
 
@@ -127,7 +116,9 @@ public class TariffDaoImpl implements dao.TariffDao {
 		List<Tariff> tariffs = null;
 
         try (Connection connection = DBManager.getInstance().getConnection()){
-        	String SELECT_QUERY ="SELECT * FROM tariff ORDER BY "+sort+" ASC;";
+        	
+        	//using preparedStatement would add extra quotes which will result in incorrect results
+        	String SELECT_QUERY ="SELECT * FROM tariff ORDER BY "+sort+" ASC;"; 
             LOG.debug("QUERY: "+SELECT_QUERY);
 
             ResultSet resultSet = connection.createStatement().executeQuery(SELECT_QUERY);
@@ -141,11 +132,11 @@ public class TariffDaoImpl implements dao.TariffDao {
         return tariffs;
 	}
         
-    //TODO: move to utils?
+    // -------  UTILS  ---------
+	
     private List<Tariff> getTariffList(ResultSet resultSet) throws SQLException {
         List<Tariff> tariffs = new ArrayList<>();
         while (resultSet.next()) {
-        	//TODO: extract db field names to another file
         	Tariff tariff = new Tariff(resultSet.getLong("id"), 
         								resultSet.getString("title"),
         								TariffType.valueOf(resultSet.getString("type")),

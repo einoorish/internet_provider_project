@@ -3,12 +3,15 @@ package controller.commands;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
+
 import constants.URL;
 import dao.UserDao;
 import dao.impl.UserDaoImpl;
 import model.User;
 
 public class RegistrationCommand implements Command {
+    private final static Logger LOG = Logger.getLogger(RegistrationCommand.class.getSimpleName());
 
     @Override
     public String execute(HttpServletRequest request) {
@@ -25,7 +28,7 @@ public class RegistrationCommand implements Command {
 		userDao.register(user);
         session.setAttribute("user", user);
 		
-    	return URL.REDIRECT_HOME;
-    	
+        LOG.info("User "+ login + " was registered");
+    	return URL.REDIRECT_HOME;	
     }
 }

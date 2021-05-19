@@ -2,6 +2,7 @@ package controller.commands;
 
 import javax.servlet.http.HttpServletRequest;
 
+import constants.Fields;
 import constants.URL;
 import dao.TariffDao;
 import dao.impl.TariffDaoImpl;
@@ -13,8 +14,8 @@ public class EditCommand implements Command {
 	public String execute(HttpServletRequest request) {
 		TariffDao dao = new TariffDaoImpl();
 		
-		if(request.getParameter("tariffId")!=null) {
-			Tariff tariff = dao.getTariffById(Integer.valueOf(request.getParameter("tariffId")));
+		if(request.getParameter(Fields.TARIFF_ID)!=null) {
+			Tariff tariff = dao.getTariffById(Integer.valueOf(request.getParameter(Fields.TARIFF_ID)));
 			request.setAttribute("tariff", tariff);
 		}
 

@@ -51,8 +51,7 @@ public class DownloadCommand implements Command {
 		        }
 		        fw.close();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+            	LOG.error(e.getMessage());
 			}
 	
         }
