@@ -8,8 +8,8 @@ public class URL {
     public static final String PROFILE = "/WEB-INF/views/profile.jsp";
     public static final String TARIFF = "/WEB-INF/views/tariff.jsp";
 
-    public static final String REDIRECT_HOME = "/internet_provider/controller?command=home";
-    public static final String REDIRECT_LOGIN = "/internet_provider/controller?command=login";
-    public static final String REDIRECT_REGISTRATION = "/internet_provider/controller?command=registration";
-    public static final String REDIRECT_PROFILE = "/internet_provider/controller?command=profile";
+    public static final String REDIRECT_HOME = "/internetProvider/controller?command=home";
+    public static final String REDIRECT_LOGIN = "/internetProvider/controller?command=login";
+    public static final String REDIRECT_REGISTRATION = "/internetProvider/controller?command=registration";
+    public static final String REDIRECT_PROFILE = "/internetProvider/controller?command=profile";
 }

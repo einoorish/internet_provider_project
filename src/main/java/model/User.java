@@ -9,7 +9,6 @@ public class User {
     private UserRole role;
     private BigDecimal funds;
     
-    //TODO: Use builder pattern?
     public User(String login, String password) {
     	this.login = login;
     	this.password = password;
@@ -55,7 +54,5 @@ public class User {
 	public void setFunds(BigDecimal funds) {
 		this.funds = funds;
 	}
-    
-    
     
 }

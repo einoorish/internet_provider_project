@@ -1,28 +1,26 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:c="http://java.sun.com/jsp/jstl/core">
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %> 
+
+<fmt:setLocale value="${lang}"/>
+<fmt:setBundle basename="text"/>
+	
+<html>
 <head>
-	<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-	<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-	<%@ taglib prefix="C" uri="http://java.sun.com/jsp/jstl/core" %>
-	<%@ page contentType="text/html;charset=UTF-8" %>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Home</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 	<link href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round" rel="stylesheet">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 	
-	<style>
-			<%@include file="/WEB-INF/styles/home.css"%>
-	</style>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 	<script>
 		$(function(){
 		    $('.list-group li').click(function(e) {
 		        e.preventDefault()
-		        
-		        $that = $(this);
-		        
+		        $that = $(this)
 		        $(".list-group").find('li').removeClass('list-group-item-success');
 		        $that.addClass('list-group-item-success');
 		    });
@@ -31,27 +29,38 @@
 	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+	<title><fmt:message key="nav.home"/></title>
 </head>
-<body>
+<body class="bg-secondary">
 
 <header>
 	<nav class="navbar navbar-light bg-dark">
-		<a href="${pageContext.request.contextPath}/controller?command=home" class="navbar-brand text-light">Internet Provider</a>
+		<a href="${pageContext.request.contextPath}/controller?command=home" class="navbar-brand text-light"><fmt:message key="nav.project_name"/></a>
 		<form class="form-inline">
-			<a class="mr-sm-2">EN</a>
-            <a class="mr-sm-2">RU</a>
+		
+		<c:choose>
+            <c:when test="${not fn:contains(pageContext.request.queryString, 'lang')}">
+                <a class="mr-sm-2" href="?${pageContext.request.queryString}&lang=uk">Укр</a>
+                <a class="mr-sm-2" href="?${pageContext.request.queryString}&lang=en">Eng</a>
+            </c:when>
+            <c:otherwise>
+                <a class="mr-sm-2" href="?${fn:replace(pageContext.request.queryString, "lang=en", "lang=uk")}">Укр</a>
+                <a class="mr-sm-2" href="?${fn:replace(pageContext.request.queryString, "lang=uk", "lang=en")}">Eng</a>
+            </c:otherwise>
+         </c:choose>
             
 			<!-- SignIn/SignUp -->            
 	        <c:set var="username" value="${sessionScope.user.login}" scope="page"/>
 	
 	        <c:choose>
 	            <c:when test="${empty username}">
-					<a class="btn btn-dark mr-sm-2" data-toggle="modal" data-target="#modalRegister" href="#">Sign Up</a>
-					<a class="btn btn-success mr-sm-2"  data-toggle="modal" data-target="#modalLogin">Sign In</a>
+					<a class="btn btn-dark mr-sm-2" data-toggle="modal" data-target="#modalRegister" href="#"><fmt:message key="nav.register"/></a>
+					<a class="btn btn-success mr-sm-2"  data-toggle="modal" data-target="#modalLogin"><fmt:message key="nav.sign_in"/></a>
 	            </c:when>
 	            <c:otherwise>
-					<a class="btn btn-dark text-muted mr-sm-2" href="${pageContext.request.contextPath}/controller?command=logout">Log out</a>
-					<a class="btn btn-dark mr-sm-2" href="${pageContext.request.contextPath}/controller?command=profile">My profile</a>
+					<a class="btn btn-dark text-muted mr-sm-2" href="${pageContext.request.contextPath}/controller?command=logout"><fmt:message key="nav.sign_out"/></a>
+					<a class="btn btn-dark mr-sm-2" href="${pageContext.request.contextPath}/controller?command=profile"><fmt:message key="nav.profile"/></a>
 	                <!-- Add log out -->
 	            </c:otherwise>
 	        </c:choose>
@@ -66,14 +75,12 @@
     
     <div class="row">
         <div class="col-2  m-0 p-0 bg-secondary position-fixed">
-          <a class="btn btn-dark btn-block m-0" href="${pageContext.request.contextPath}/controller?menutype=PHONE">Phone</a>  
-		  <a class="btn btn-dark btn-block m-0" href="${pageContext.request.contextPath}/controller?menutype=INTERNET">Internet</a>
-		  <a class="btn btn-dark btn-block m-0" href="${pageContext.request.contextPath}/controller?menutype=CABLE">CableTV</a>
-		  <a class="btn btn-dark btn-block m-0" href="${pageContext.request.contextPath}/controller?menutype=IP_TV">IP-TV</a>
+          <a class="btn btn-dark btn-block m-0" href="${pageContext.request.contextPath}/controller?menutype=PHONE"><fmt:message key="menu.type.phone"/></a>  
+		  <a class="btn btn-dark btn-block m-0" href="${pageContext.request.contextPath}/controller?menutype=INTERNET"><fmt:message key="menu.type.internet"/></a>
+		  <a class="btn btn-dark btn-block m-0" href="${pageContext.request.contextPath}/controller?menutype=CABLE"><fmt:message key="menu.type.cable"/></a>
+		  <a class="btn btn-dark btn-block m-0" href="${pageContext.request.contextPath}/controller?menutype=IP_TV"><fmt:message key="menu.type.ip_tv"/></a>
     	</div>
-    	<a class="col-2 btn btn-dark btn-block m-0 fixed-bottom text-white" data-toggle="modal" data-target="#modalDownload">Download all</a>  
-
-		
+    	<a class="col-2 btn btn-dark btn-block m-0 fixed-bottom text-white" data-toggle="modal" data-target="#modalDownload"><fmt:message key="menu.download"/></a>  
     
    <div class="col-10 px-0 min-vh-100 offset-2 bg-light ">
    		<div class="content">
@@ -101,12 +108,12 @@
 													<c:param name="id" value="${tariff.id}" />	
 												</c:url>
 							            		<div class="row d-flex justify-content-center ">
-								            		<a href="${subscribeUrl}" class="card-link btn btn-outline-primary align-items-center justify-content-center">Subscribe</a>
-							            			<a href="${editUrl}" class="card-link btn btn-outline-primary align-items-center justify-content-center">Edit</a>
+								            		<a href="${subscribeUrl}" class="card-link btn btn-outline-primary align-items-center justify-content-center"><fmt:message key="action.subscribe"/></a>
+							            			<a href="${editUrl}" class="card-link btn btn-outline-primary align-items-center justify-content-center"><fmt:message key="action.edit"/></a>
 							            		</div>
 						            		</c:when>
 						            		<c:otherwise>
-						            			<a href="${subscribeUrl}" class="col-12 card-link btn btn-outline-primary align-items-center justify-content-center">Subscribe</a> 
+						            			<a href="${subscribeUrl}" class="col-12 card-link btn btn-outline-primary align-items-center justify-content-center"><fmt:message key="action.subscribe"/></a> 
 						            		</c:otherwise>
 						            	</c:choose>
 						            </c:if>
@@ -118,8 +125,8 @@
      				</c:forEach>
      				<c:if test="${sessionScope.user.role eq 'ADMIN'}">
 	     				<div class="col-md-3 mt-4">
-			                <div class="card bg-primary py-2 pl-2 d-flex justify-content-center align-items-center">
-			                	<a style="color:white;" href="${pageContext.request.contextPath}/controller?command=edit">Add</a>
+			                <div class="card bg-primary py-2 d-flex justify-content-center align-items-center">
+			                	<a style="color:white;" href="${pageContext.request.contextPath}/controller?command=edit"><fmt:message key="action.add"/></a>
 	               			</div>
 	           			</div>
 					</c:if>           			
@@ -137,7 +144,7 @@
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Sign In</h5>
+        <h5 class="modal-title"><fmt:message key="nav.register"/></h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -152,7 +159,7 @@
 					<i class="fa fa-lock"></i>
 					<input name="password" type="password" class="form-control" placeholder="Password" required="required">					
 				</div>
-	            <button class="btn btn-success">Continue</button>
+	            <button class="btn btn-success"><fmt:message key="action.continue"/></button>
 			</form>								
 		</div>
     </div>
@@ -163,7 +170,7 @@
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Sign Up</h5>
+        <h5 class="modal-title"><fmt:message key="nav.login"/></h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -178,7 +185,7 @@
 					<i class="fa fa-lock"></i>
 					<input name="password" type="password" class="form-control" placeholder="Password" required="required">					
 				</div>
-	            <button class="btn btn-success">Continue</button>
+	            <button class="btn btn-success"><fmt:message key="action.continue"/></button>
 			</form>								
 	  </div>
     </div>

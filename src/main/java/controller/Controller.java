@@ -23,6 +23,9 @@ public class Controller extends HttpServlet {
     }
     
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		LOG.debug("User: " + request.getSession().getAttribute("user"));
+		LOG.debug("Lang: " + request.getSession().getAttribute("lang"));
+		
 		String commandName = request.getParameter("command");
 		Command command = CommandHandler.get(commandName);
 		String uri = command.execute(request);
