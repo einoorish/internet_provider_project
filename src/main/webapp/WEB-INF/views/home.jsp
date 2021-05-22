@@ -2,7 +2,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %> 
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <fmt:setLocale value="${lang}"/>
 <fmt:setBundle basename="text"/>
@@ -45,8 +45,8 @@
                 <a class="mr-sm-2" href="?${pageContext.request.queryString}&lang=en">Eng</a>
             </c:when>
             <c:otherwise>
-                <a class="mr-sm-2" href="?${fn:replace(pageContext.request.queryString, "lang=en", "lang=uk")}">Укр</a>
-                <a class="mr-sm-2" href="?${fn:replace(pageContext.request.queryString, "lang=uk", "lang=en")}">Eng</a>
+                <a class="mr-sm-2" href="?${fn:replace(pageContext.request.queryString,'lang=en','lang=uk')}">Укр</a>
+                <a class="mr-sm-2" href="?${fn:replace(pageContext.request.queryString,'lang=uk','lang=en')}">Eng</a>
             </c:otherwise>
          </c:choose>
             
