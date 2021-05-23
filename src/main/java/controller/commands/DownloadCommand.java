@@ -20,6 +20,7 @@ public class DownloadCommand implements Command {
 	@Override
 	public String execute(HttpServletRequest request) {
 		LOG.info("DOWNLOAD started");
+		request.getSession().setAttribute("invalidData", "false");
         String sort= request.getParameter("sort");
         TariffDao tariffDao = new TariffDaoImpl();
         

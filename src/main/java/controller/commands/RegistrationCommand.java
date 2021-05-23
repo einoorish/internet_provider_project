@@ -5,6 +5,7 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 
+import constants.Regex;
 import constants.URL;
 import dao.UserDao;
 import dao.impl.UserDaoImpl;
@@ -19,6 +20,13 @@ public class RegistrationCommand implements Command {
         
         String login = request.getParameter("login");
         String password = request.getParameter("password");
+        
+        if(!login.matches(Regex.LOGIN_REGEX) || !password.matches(Regex.PASSWORD_REGEX)) {
+            LOG.info("Did not match regex");
+        	session.setAttribute("invalidData", "true");
+        	return URL.REDIRECT_HOME;	
+        }
+    	session.setAttribute("invalidData", "false");
     	
     	UserDao userDao = new UserDaoImpl();
     	

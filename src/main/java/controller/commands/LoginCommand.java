@@ -25,9 +25,11 @@ public class LoginCommand implements Command {
         User user = userDao.getUserByLogin(login);
 
         if (user != null && password.equals(user.getPassword())) {
+        	session.setAttribute("invalidData", "false");
         	LOG.info("Successful log in");
             session.setAttribute("user", user);
         } else {
+        	session.setAttribute("invalidData", "true");
         	LOG.info("Wrong credentials");
         }
         return URL.REDIRECT_HOME;

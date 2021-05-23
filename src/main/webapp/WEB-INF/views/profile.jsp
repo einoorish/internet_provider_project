@@ -61,10 +61,10 @@
 		    <h5 class="card-title">${sessionScope.user.login}</h5>
 		    <c:choose>
 	            <c:when test="${sessionScope.user.status eq 'BLOCKED'}">
-					<p class="ml-2 text-danger">BLOCKED</p>
+					<p class="ml-2 text-danger"><fmt:message key="profile.blocked"/></p>
 	            </c:when>
 	            <c:otherwise>
-					<p class="ml-2 text-success">ACTIVE</p> 
+					<p class="ml-2 text-success"><fmt:message key="profile.active"/></p> 
 	            </c:otherwise>
             </c:choose>
 		</div>
@@ -108,6 +108,7 @@
 	  			</div>
 	  			</c:forEach>
 			</div>
+			<p class="text-danger">Incorrect input</p>
 		</div>
 	</div>
 </div>

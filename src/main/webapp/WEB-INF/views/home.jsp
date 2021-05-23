@@ -15,6 +15,11 @@
 	<link href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round" rel="stylesheet">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+	<script type="text/javascript">
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
 	
 	<script>
 		$(function(){
@@ -26,10 +31,6 @@
 		    });
 		})
 	</script>
-	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-
 	<title><fmt:message key="nav.home"/></title>
 </head>
 <body class="bg-secondary">
@@ -68,8 +69,6 @@
   		</form>
 	</nav>
 </header>
-
-
 
 <div class="container-fluid">
     
@@ -144,7 +143,7 @@
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title"><fmt:message key="nav.register"/></h5>
+        <h5 class="modal-title"><fmt:message key="nav.sign_in"/></h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -170,7 +169,7 @@
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title"><fmt:message key="nav.login"/></h5>
+        <h5 class="modal-title"><fmt:message key="nav.register"/></h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -178,15 +177,22 @@
       <div class="modal-body">
 			<form class="form-horizontal" action="${pageContext.request.contextPath}/controller?command=registration" method="post">
 				<div class="form-group">
-					<i class="fa fa-user"></i>
+					<div class="form-group-inline">
+						<i class="fa fa-user"></i>
+						<small class="text-secondary"><fmt:message key="regex.info.login"/></small>
+					</div>
 					<input name="login" type="text" class="form-control" placeholder="Username" required="required">
 				</div>
 				<div class="form-group">
-					<i class="fa fa-lock"></i>
+					<div class="form-group-inline">
+						<i class="fa fa-lock"></i>
+						<small class="text-secondary"><fmt:message key="regex.info.password"/></small>
+					</div>
+					
 					<input name="password" type="password" class="form-control" placeholder="Password" required="required">					
 				</div>
 	            <button class="btn btn-success"><fmt:message key="action.continue"/></button>
-			</form>								
+			</form>							
 	  </div>
     </div>
   </div>
@@ -221,6 +227,11 @@
   </div>
 </div>
 
+<c:if test="${sessionScope.invalidData eq 'true'}">
+	<script>
+		alert("<fmt:message key='alert.wrong.input'/>");
+	</script>
+</c:if>
 </body>
 </html>
 

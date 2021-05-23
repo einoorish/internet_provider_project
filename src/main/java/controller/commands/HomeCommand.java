@@ -15,7 +15,10 @@ public class HomeCommand implements Command {
 	    TariffType type;
 	    if(request.getParameter("menutype") == null)
 	    	type = TariffType.PHONE;
-	    else type = TariffType.valueOf(request.getParameter("menutype").toString());
+	    else {
+	    	type = TariffType.valueOf(request.getParameter("menutype").toString());
+			request.getSession().setAttribute("invalidData", "false");
+	    }
 	   
 	    request.setAttribute("type", type);
 	    request.setAttribute("data", dao.getTariffListByType(type));
