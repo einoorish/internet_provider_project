@@ -1,5 +1,6 @@
 package dao.impl;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,9 +15,9 @@ import constants.Fields;
 import constants.Queries;
 import dao.UserDao;
 import model.Subscription;
-import model.SubscriptionStatus;
 import model.User;
 import model.UserRole;
+import model.UserStatus;
 
 public class UserDaoImpl implements UserDao {
     private final static Logger LOG = Logger.getLogger(UserDaoImpl.class.getSimpleName());
@@ -31,6 +32,7 @@ public class UserDaoImpl implements UserDao {
             preparedStatement.setString(2, user.getPassword());
             preparedStatement.setString(3, user.getFunds().toString());
             preparedStatement.setString(4, user.getRole().toString());
+            preparedStatement.setString(5, UserStatus.ACTIVE.toString());
     		LOG.debug(preparedStatement.toString());
     		
             result = preparedStatement.executeUpdate();
@@ -74,7 +76,7 @@ public class UserDaoImpl implements UserDao {
 	                subscriptions.add(
 	                		new Subscription(resultSet.getLong(Fields.SUBSCRIPTION_ID), resultSet.getLong(Fields.SUBSCRIPTION_USER_ID), 
 	                		    resultSet.getLong(Fields.SUBSCRIPTION_TARIFF_ID), resultSet.getDate(Fields.SUBSCRIPTION_START_DATE),
-	                		    resultSet.getDate(Fields.SUBSCRIPTION_END_DATE), resultSet.getString(Fields.SUBSCRIPTION_STATUS))
+	                		    resultSet.getDate(Fields.SUBSCRIPTION_END_DATE))
 	                		);
 	            }
 	            resultSet.close();
@@ -89,13 +91,13 @@ public class UserDaoImpl implements UserDao {
 	
 	public void subscribe(long userId, long tariffId, Date startDate, Date endDate) {
 		LOG.info("SUBSCRIBE method started");
+		
 		try (Connection connection = DBManager.getInstance().getConnection()){
             PreparedStatement preparedStatement = connection.prepareStatement(Queries.USER_SUBSCRIBE); 
             preparedStatement.setLong(1, userId);
             preparedStatement.setLong(2, tariffId);
             preparedStatement.setObject(3, startDate);
             preparedStatement.setObject(4, endDate);
-            preparedStatement.setString(5, SubscriptionStatus.REQUESTED.toString());
     		LOG.debug(preparedStatement.toString());
     		
             preparedStatement.executeUpdate();
@@ -120,6 +122,21 @@ public class UserDaoImpl implements UserDao {
         }
 	}
 	
+	public void addFunds(long userId, BigDecimal value) {
+		LOG.info("ADD FUNDS method started");
+		try (Connection connection = DBManager.getInstance().getConnection();
+	            PreparedStatement preparedStatement = connection.prepareStatement(Queries.USER_ADD_FUNDS)) {
+            	preparedStatement.setBigDecimal(1, value);
+	            preparedStatement.setLong(2, userId);
+	    		LOG.debug(preparedStatement.toString());
+
+	            preparedStatement.executeUpdate();
+	            
+        } catch (SQLException e) {
+	        	LOG.error(e.getMessage());
+        }
+	}
+	
 	// -------  UTILS  --------
 	
 	private User getUserFromPreparedStatement(PreparedStatement preparedStatement) throws SQLException {
@@ -128,7 +145,7 @@ public class UserDaoImpl implements UserDao {
         	if (resultSet.next()) {
                 user = new User(resultSet.getLong(Fields.USER_ID), resultSet.getString(Fields.USER_LOGIN), 
                 		    resultSet.getString(Fields.USER_PASSWORD), resultSet.getBigDecimal(Fields.USER_FUNDS), 
-                		    UserRole.valueOf(resultSet.getString(Fields.USER_ROLE)));
+                		    UserRole.valueOf(resultSet.getString(Fields.USER_ROLE)), UserStatus.valueOf(resultSet.getString(Fields.USER_STATUS)));
             }
         }
         return user;

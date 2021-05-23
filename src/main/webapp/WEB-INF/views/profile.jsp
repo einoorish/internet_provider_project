@@ -57,8 +57,19 @@
 	<div class="card">
 	
 	  <div class="card-body">
-	    <h5 class="card-title">${sessionScope.user.login}</h5>
+	  	<div class="form-inline">
+		    <h5 class="card-title">${sessionScope.user.login}</h5>
+		    <c:choose>
+	            <c:when test="${sessionScope.user.status eq 'BLOCKED'}">
+					<p class="ml-2 text-danger">BLOCKED</p>
+	            </c:when>
+	            <c:otherwise>
+					<p class="ml-2 text-success">ACTIVE</p> 
+	            </c:otherwise>
+            </c:choose>
+		</div>
 	    <p class="card-text"><fmt:message key="profile.funds"/>: ${sessionScope.user.funds} uah</p>
+	    <button class="btn btn-dark mr-sm-2" data-toggle="modal" data-target="#addFunds"><fmt:message key="action.add.funds"/></button>
 	  </div>
 	  <hr>
 	  <div class="card-body">
@@ -100,6 +111,31 @@
 		</div>
 	</div>
 </div>
+
+<div class="modal fade" id="addFunds" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><fmt:message key="action.add.funds"/></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      		<c:url value="/controller" var="url">									
+				<c:param name="command" value="addFunds" />
+			</c:url>
+      
+			<form class="form-horizontal" action="${url}" method="post">
+			 	<input type="number" name="funds" placeholder="0.0">
+	            <button class="btn btn-success"><fmt:message key="action.continue"/></button>
+			</form>								
+	  </div>
+    </div>
+  </div>
+</div>
+
+
 </body>
 </html>
 
