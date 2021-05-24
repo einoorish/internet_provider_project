@@ -31,18 +31,20 @@ public class SaveTariff extends HttpServlet {
         LOG.info("POST started");
         
 		TariffDao dao = new TariffDaoImpl();
-
+		LOG.debug(request.getParameter(Fields.TARIFF_TITLE_UK));
 		String title = request.getParameter(Fields.TARIFF_TITLE);
+		String title_uk = request.getParameter(Fields.TARIFF_TITLE_UK);
 		BigDecimal price = new BigDecimal(request.getParameter(Fields.TARIFF_PRICE));
 		TariffType type = TariffType.valueOf(request.getParameter(Fields.TARIFF_TYPE));
 		String description = request.getParameter(Fields.TARIFF_DESCRIPTION);	
+		String description_uk = request.getParameter(Fields.TARIFF_DESCRIPTION_UK);	
 
 		if(request.getParameter(Fields.TARIFF_ID)!=null) {
 			long id = Long.valueOf(request.getParameter(Fields.TARIFF_ID));
-			dao.update(new Tariff(id, title, type, price, description));
+			dao.update(new Tariff(id, title, title_uk, type, price, description, description_uk));
 			LOG.debug("Done updating tariff");
         } else {
-    		dao.insert(new Tariff(title, type, price, description));
+    		dao.insert(new Tariff(title, title_uk, type, price, description, description_uk));
 			LOG.debug("Done adding tariff");
         }
 		doGet(request, response);

@@ -2,8 +2,8 @@ package constants;
 
 public class Queries {
 	
-	public static final String TARIFF_INSERT = "INSERT INTO tariff (title, type, price, description) VALUES (?, ?, ?, ?);";
-	public static final String TARIFF_UPDATE = "UPDATE tariff SET title=?, type=?, price=?, description=?  WHERE id=?;";
+	public static final String TARIFF_INSERT = "INSERT INTO tariff (title, title_uk, type, price, description, description_uk) VALUES (?, ?, ?, ?, ?, ?);";
+	public static final String TARIFF_UPDATE = "UPDATE tariff SET title=?, title_uk=?, type=?, price=?, description=?, description_uk=?  WHERE id=?;";
 	public static final String TARIFF_DELETE = "DELETE FROM tariff WHERE id=?;";
 	public static final String TARIFF_GET_BY_ID = "SELECT * FROM tariff WHERE id=?;";
 	public static final String TARIFF_GET_BY_TYPE = "SELECT * FROM tariff WHERE type=?";

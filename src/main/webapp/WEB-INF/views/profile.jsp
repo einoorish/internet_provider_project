@@ -93,16 +93,31 @@
 				    </c:choose>
 				 	<div class="card py-2 px-2">
 				    	<div class="card-block">
-				        	<h3 class="card-title align-items-center d-flex justify-content-center mb-1">${tariff.title}</h3>
+				    		<c:choose>
+						            <c:when test="${lang eq 'uk'}">
+							        	<h3 class="card-title align-items-center d-flex justify-content-center mb-1">${tariff.title_uk}</h3>
+						            </c:when>
+						            <c:otherwise>
+							        	<h3 class="card-title align-items-center d-flex justify-content-center mb-1">${tariff.title}</h3>
+						            </c:otherwise>
+						        </c:choose>	
 				            <small class="card-subtitle text-muted align-items-top d-flex justify-content-center">${tariff.price} uah</small> 
 				           	<div class="card-block">
-				            	<div class="card-text my-2">${tariff.description}</div>
-			            			<c:url value="/controller?command=unsubscribe" var="url">
-									<c:param name="tariffId" value="${tariff.id}" />
-									</c:url>
-					            
-									<a href="${url}" class="col-12 card-link btn btn-outline-danger align-items-center justify-content-center"><fmt:message key="action.unsubscribe"/></a> 
-				         		</div>
+				           		<c:choose>
+							            <c:when test="${lang eq 'uk'}">
+			                       			<div class="card-text my-2">${tariff.description_uk}</div>
+							            </c:when>
+							            <c:otherwise>
+			                        		<div class="card-text my-2">${tariff.description}</div>
+							            </c:otherwise>
+						        </c:choose>	
+				           	
+		            			<c:url value="/controller?command=unsubscribe" var="url">
+								<c:param name="tariffId" value="${tariff.id}" />
+								</c:url>
+				            
+								<a href="${url}" class="col-12 card-link btn btn-outline-danger align-items-center justify-content-center"><fmt:message key="action.unsubscribe"/></a> 
+			         		</div>
 				   		</div>
         			</div>
 	  			</div>

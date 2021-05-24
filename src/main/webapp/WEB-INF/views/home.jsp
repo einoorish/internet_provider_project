@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" language="java" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
@@ -90,10 +90,27 @@
 			        <div class="col-md-3">
 		                <div class="card py-2 px-2">
 		                    <div class="card-block">
-			                    <h4 class="card-title d-flex justify-content-center align-items-center">${tariff.title}</h4>
+								<c:choose>
+						            <c:when test="${lang eq 'uk'}">
+			                    		<h5 class="card-title d-flex justify-content-center align-items-center">${tariff.title_uk}</h5>
+						            </c:when>
+						            <c:otherwise>
+			                    		<h5 class="card-title d-flex justify-content-center align-items-center">${tariff.title}</h5>
+						            </c:otherwise>
+						        </c:choose>		                    
+		                    
 		                    	<small class="card-subtitle text-muted align-items-top d-flex justify-content-center">${tariff.price} uah</small> 
                     			<div class="card-block">
-		                        <div class="card-text my-2">${tariff.description}</div>
+                    			
+									<c:choose>
+							            <c:when test="${lang eq 'uk'}">
+			                       			<div class="card-text my-2">${tariff.description_uk}</div>
+							            </c:when>
+							            <c:otherwise>
+			                        		<div class="card-text my-2">${tariff.description}</div>
+							            </c:otherwise>
+							        </c:choose>	
+	                    			
 		            
 						            <c:if test="${not empty sessionScope.user.login}">
 						            	<c:url value="/controller" var="subscribeUrl">									

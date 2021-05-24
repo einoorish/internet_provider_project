@@ -22,7 +22,7 @@ public class DBManager {
 
     public Connection getConnection() throws SQLException {
     	Connection conn = DriverManager.getConnection(
-                   "jdbc:mysql://localhost:3306/internet_provider?", "root", "root"
+                   "jdbc:mysql://localhost:3306/internet_provider?characterEncoding=UTF-8", "root", "root"
                    );
         
         System.out.println("Connected to database");

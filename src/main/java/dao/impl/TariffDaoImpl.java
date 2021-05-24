@@ -1,5 +1,6 @@
 package dao.impl;
 
+import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -23,9 +24,11 @@ public class TariffDaoImpl implements dao.TariffDao {
         try (Connection connection = DBManager.getInstance().getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(Queries.TARIFF_INSERT)) {
             preparedStatement.setString(1, tariff.getTitle());
-            preparedStatement.setString(2, tariff.getType().toString());
-            preparedStatement.setString(3, tariff.getPrice().toString());
-            preparedStatement.setString(4, tariff.getDescription().toString());
+            preparedStatement.setString(2, tariff.getTitle_uk());
+            preparedStatement.setString(3, tariff.getType().toString());
+            preparedStatement.setString(4, tariff.getPrice().toString());
+            preparedStatement.setString(5, tariff.getDescription());
+            preparedStatement.setString(6, tariff.getDescription_uk());
 
             LOG.debug("QUERY: "+preparedStatement.toString());
             result = preparedStatement.executeUpdate();
@@ -43,10 +46,12 @@ public class TariffDaoImpl implements dao.TariffDao {
 
             PreparedStatement preparedStatement = connection.prepareStatement(Queries.TARIFF_UPDATE);
             preparedStatement.setString(1, tariff.getTitle());
-            preparedStatement.setString(2, tariff.getType().toString());
-            preparedStatement.setString(3, tariff.getPrice().toPlainString());
-            preparedStatement.setString(4, tariff.getDescription());
-            preparedStatement.setLong(5, tariff.getId());
+            preparedStatement.setString(2, tariff.getTitle_uk());
+            preparedStatement.setString(3, tariff.getType().toString());
+            preparedStatement.setString(4, tariff.getPrice().toString());
+            preparedStatement.setString(5, tariff.getDescription());
+            preparedStatement.setString(6, tariff.getDescription_uk());
+            preparedStatement.setLong(7, tariff.getId());
             
             LOG.debug("QUERY: "+preparedStatement.toString());
             preparedStatement.executeUpdate();
@@ -139,9 +144,11 @@ public class TariffDaoImpl implements dao.TariffDao {
         while (resultSet.next()) {
         	Tariff tariff = new Tariff(resultSet.getLong("id"), 
         								resultSet.getString("title"),
+        								resultSet.getString("title_uk"),
         								TariffType.valueOf(resultSet.getString("type")),
         								resultSet.getBigDecimal("price"),
-        								resultSet.getString("description"));
+        								resultSet.getString("description"),
+        								resultSet.getString("description_uk"));
         	tariffs.add(tariff);
         }
         return tariffs;

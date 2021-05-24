@@ -11,8 +11,10 @@ public class Fields {
     public static final String TARIFF_ID = "id";
     public static final String TARIFF_TYPE = "type";
     public static final String TARIFF_TITLE = "title";
+    public static final String TARIFF_TITLE_UK = "title_uk";
     public static final String TARIFF_PRICE = "price";
     public static final String TARIFF_DESCRIPTION = "description";
+    public static final String TARIFF_DESCRIPTION_UK = "description_uk";
     
     public static final String SUBSCRIPTION_ID = "id";
     public static final String SUBSCRIPTION_TARIFF_ID = "tariffId";

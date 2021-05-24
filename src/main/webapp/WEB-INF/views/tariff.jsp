@@ -77,7 +77,20 @@
 			            </c:otherwise>
 					</c:choose>   
 				</div>
-			</div>             
+			</div>    
+			<div class="form-group row">
+	            <label class="col-lg-3 col-form-label form-control-label"><fmt:message key="tariff.title_uk"/></label>                
+	      		<div class=" col-lg-9">
+		  		   	<c:choose>
+				        <c:when test="${requestScope.tariff != null}">
+			                   <input class="form-control" name="title_uk" type="text" value="${requestScope.tariff.title_uk}" />
+						</c:when>
+						<c:otherwise>
+			                    <input required class="form-control" name="title_uk" type="text"/>
+			            </c:otherwise>
+					</c:choose>   
+				</div>
+			</div>            
 
             <div class="form-group row">
                 <label class="col-lg-3 col-form-label form-control-label"><fmt:message key="tariff.type"/></label>
@@ -120,6 +133,19 @@
 	                </c:when>
 	    		    <c:otherwise>
 	                     <input required class="form-control"  maxlength="1024" name="description" type="text"/>
+		        	</c:otherwise>
+		        </c:choose>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-lg-3 col-form-label form-control-label"><fmt:message key="tariff.description_uk"/></label>
+       			<div class="col-lg-9">
+		      	<c:choose>
+		        	<c:when test="${requestScope.tariff != null}">  
+	                     <input class="form-control"  name="description_uk" type="text" maxlength="1024" value="${requestScope.tariff.description_uk}" />
+	                </c:when>
+	    		    <c:otherwise>
+	                     <input required class="form-control"  maxlength="1024" name="description_uk" type="text"/>
 		        	</c:otherwise>
 		        </c:choose>
                 </div>
