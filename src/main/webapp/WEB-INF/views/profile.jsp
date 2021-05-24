@@ -107,8 +107,7 @@
         			</div>
 	  			</div>
 	  			</c:forEach>
-			</div>
-			<p class="text-danger">Incorrect input</p>
+			</div> 
 		</div>
 	</div>
 </div>

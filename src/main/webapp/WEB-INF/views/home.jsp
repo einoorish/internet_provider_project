@@ -38,6 +38,7 @@
 <header>
 	<nav class="navbar navbar-light bg-dark">
 		<a href="${pageContext.request.contextPath}/controller?command=home" class="navbar-brand text-light"><fmt:message key="nav.project_name"/></a>
+		
 		<form class="form-inline">
 		
 		<c:choose>

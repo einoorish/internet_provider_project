@@ -14,7 +14,7 @@ public class User {
     	this.login = login;
     	this.password = password;
     	role = UserRole.USER;
-    	status = UserStatus.ACTIVE;
+    	status = UserStatus.BLOCKED;
     	funds = new BigDecimal(0);
     };
     
