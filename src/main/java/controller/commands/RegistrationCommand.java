@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
+import org.mindrot.jbcrypt.BCrypt;
 
 import constants.Regex;
 import constants.URL;
@@ -27,10 +28,10 @@ public class RegistrationCommand implements Command {
         	return URL.REDIRECT_HOME;	
         }
     	session.setAttribute("invalidData", "false");
-    	
+        
     	UserDao userDao = new UserDaoImpl();
     	
-    	User user = new User(login, password);
+    	User user = new User(login, BCrypt.hashpw(password, BCrypt.gensalt()));
     	System.out.println(login);
 
 		userDao.register(user);

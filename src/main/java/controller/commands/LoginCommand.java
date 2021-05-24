@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
+import org.mindrot.jbcrypt.BCrypt;
 
 import constants.Fields;
 import constants.URL;
@@ -24,7 +25,7 @@ public class LoginCommand implements Command {
         UserDao userDao = new UserDaoImpl();
         User user = userDao.getUserByLogin(login);
 
-        if (user != null && password.equals(user.getPassword())) {
+        if (user != null && BCrypt.checkpw(password, user.getPassword())) {
         	session.setAttribute("invalidData", "false");
         	LOG.info("Successful log in");
             session.setAttribute("user", user);
